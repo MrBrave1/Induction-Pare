@@ -671,10 +671,12 @@
     // entry.1679077126_month  → Date – Month
     // entry.1679077126_day    → Date – Day
 
-   var fields = {
+  
+ var fields = {
       'entry.2017134743':        document.getElementById('f-name').value,
       'entry.338794571':         document.getElementById('f-org').value,
       'entry.503286308':         document.getElementById('f-mobile').value,
+      'entry.1104993092':        document.getElementById('f-email') ? document.getElementById('f-email').value : "", 
       'entry.588372971':         document.getElementById('f-purpose').value,
       'entry.1984568855':        document.getElementById('f-area').value,
       'entry.1679077126_year':   dateParts[0],
@@ -687,8 +689,7 @@
       'entry.1053711216':        document.getElementById('f-idnum').value,
       'entry.1960355008':        document.getElementById('f-bp').value,
       'entry.659276636':         passId
-    };;
-
+};
     // Build a hidden form and POST it to the hidden iframe (no page redirect)
     var form = document.createElement('form');
     form.method = 'POST';
