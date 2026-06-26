@@ -453,15 +453,19 @@
     <div class="form-row">
       <div class="form-group">
         <label>Area to be Visited <span class="req">*</span></label>
-        <select id="f-area">
+        <!-- UPDATED DROPDOWN: MUST EXACTLY MATCH GOOGLE FORM DATABASE OPTIONS -->
+        <select id="f-area" required>
           <option value="">— Select —</option>
-          <option>Powerhouse (Machine Hall)</option>
-          <option>Control Room</option>
-          <option>Switchyard</option>
-          <option>Dam / Reservoir</option>
-          <option>Office Area</option>
-          <option>Fabrication Yard</option>
-          <option>Multiple Areas</option>
+          <option value="SwitchYard">SwitchYard</option>
+          <option value="Control Room">Control Room</option>
+          <option value="Office">Office</option>
+          <option value="Turbine Floor">Turbine Floor</option>
+          <option value="MIV Floor">MIV Floor</option>
+          <option value="Generator Floor">Generator Floor</option>
+          <option value="AHU">AHU</option>
+          <option value="Diesel Generator">Diesel Generator</option>
+          <option value="Dam">Dam</option>
+          <option value="Colony">Colony</option>
         </select>
       </div>
       <div class="form-group">
@@ -485,11 +489,11 @@
         <label>ID Proof Type <span class="req">*</span></label>
         <select id="f-idtype">
           <option value="">— Select —</option>
-          <option>Aadhaar Card</option>
-          <option>Passport</option>
-          <option>Driving Licence</option>
-          <option>Company ID</option>
-          <option>Government ID</option>
+          <option value="Aadhaar Card">Aadhaar Card</option>
+          <option value="Passport">Passport</option>
+          <option value="Driving Licence">Driving Licence</option>
+          <option value="Company ID">Company ID</option>
+          <option value="Government ID">Government ID</option>
         </select>
       </div>
       <div class="form-group">
@@ -651,28 +655,11 @@
     var timeHour   = timeParts[0];
     var timeMinute = timeParts[1];
 
-    // ── ID Proof: combine type and number into one string ──
-    var idCombined = document.getElementById('f-idtype').value + ' - ' + document.getElementById('f-idnum').value;
-
     // ── Google Form POST endpoint ──
     var FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSezJ6f_pB3bPPvcZL1w_t-cwKQ6qXnn4BLaxQONdD_hBX0MKA/formResponse';
 
     // ── Field mapping ──
-    // entry.1104993092  → Full Name
-    // entry.588372971   → Organisation / Company
-    // entry.819725668   → Mobile Number
-    // entry.1177683264  → Purpose of Visit
-    // entry.1053711216  → Area to be Visited
-    // entry.1960355008  → Hosted By
-    // entry.659276636   → ID Proof (type + number)
-    // entry.1257435586_hour   → Time In – Hour
-    // entry.1257435586_minute → Time In – Minute
-    // entry.1679077126_year   → Date – Year
-    // entry.1679077126_month  → Date – Month
-    // entry.1679077126_day    → Date – Day
-
-  
- var fields = {
+    var fields = {
       'entry.2017134743':        document.getElementById('f-name').value,
       'entry.338794571':         document.getElementById('f-org').value,
       'entry.503286308':         document.getElementById('f-mobile').value,
@@ -689,7 +676,8 @@
       'entry.1053711216':        document.getElementById('f-idnum').value,
       'entry.1960355008':        document.getElementById('f-bp').value,
       'entry.659276636':         passId
-};
+    };
+
     // Build a hidden form and POST it to the hidden iframe (no page redirect)
     var form = document.createElement('form');
     form.method = 'POST';
