@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- viewport intentionally allows pinch-zoom (no maximum-scale / user-scalable=no)
+     while still fitting the layout to the device width on first load -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="color-scheme" content="light"/>
+<meta name="theme-color" content="#0A1628"/>
+<meta name="description" content="PARE HEP 2×55 MW Visitor Safety Induction – ANDRITZ O&M Pvt. Ltd."/>
 <title>Visitor Safety Induction – PARE HEP 2×55 MW</title>
+<!-- Speed up the very first paint of the hero photo on the welcome screen -->
+<link rel="preload" as="image" href="image1.jpg" fetchpriority="high"/>
 <style>
   :root {
     --navy: #0A1628; --blue: #0D3B6E; --steel: #1A5276;
@@ -12,8 +19,21 @@
     --border: #D5D8DC; --text: #1C2833;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #F0F3F4; color: var(--text); }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%; /* stop iOS auto-inflating text; we handle scaling ourselves */
+    text-size-adjust: 100%;
+  }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #F0F3F4; color: var(--text);
+    overflow-x: hidden; /* guards against any accidental horizontal scroll on small/zoomed screens */
+    line-height: 1.5;
+  }
+  /* Safety net: any image anywhere (even without .site-photo) stays inside its container */
+  img { max-width: 100%; height: auto; }
+  /* Wide data tables scroll horizontally on narrow screens instead of squeezing/breaking */
+  .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
   header {
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--steel) 100%);
@@ -54,7 +74,7 @@
   .card ul, .card ol { padding-left: 20px; }
   .card li { margin-bottom: 6px; }
 
-  /* Reusable photo utility — replaces repeated inline styles on every <img> */
+  /* Reusable photo utility — replaces repeated inline styles on every image */
   .site-photo { display: block; width: 100%; height: auto; border-radius: 6px; }
   .site-photo--md  { max-width: 800px; }
   .site-photo--sm  { max-width: 400px; }
@@ -160,6 +180,25 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   #submit-overlay p { color: white; font-size: 15px; font-weight: 600; }
 
+  /* ── Small-screen refinements (phones, and any viewport zoomed in) ── */
+  @media (max-width: 480px) {
+    header { padding: 28px 16px 24px; }
+    .card { padding: 20px 18px 18px; }
+    .card h2 { font-size: 18px; }
+    .hero-card { padding: 28px 20px; }
+    .hero-card h2 { font-size: 21px; }
+    .btn-row { flex-direction: column-reverse; }
+    .btn-row .btn { width: 100%; text-align: center; }
+    th, td { padding: 8px 10px; font-size: 12.5px; }
+    .pass-id { font-size: 18px; padding: 14px 18px; word-break: break-all; }
+  }
+
+  /* Respect users who prefer reduced motion (also cheaper to render) */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .section.active, .btn { animation: none !important; transition: none !important; }
+  }
+
   @media print { #progress-bar, .btn-row { display: none; } }
 </style>
 </head>
@@ -214,6 +253,7 @@
   </div>
   <div class="card">
     <h2><span class="icon">&#127981;</span>Site Overview</h2>
+    <div class="table-scroll">
     <table>
       <tr><th>Detail</th><th>Information</th></tr>
       <tr><td>Project</td><td>Run-off the River Hydro Power Station — River Pare</td></tr>
@@ -226,10 +266,11 @@
       <tr><td>Contractor</td><td>Andritz O&amp;M Pvt. Ltd.</td></tr>
       <tr><td>Operation Mode</td><td>Operation &amp; Maintenance (24&#xD7;7)</td></tr>
     </table>
+    </div>
   </div>
   <div class="card">
     <h2><span class="icon">&#9200;</span>Site Photos</h2>
-    <img class="site-photo site-photo--md" src="image1.jpg" alt="PARE HEP"/>
+    <img class="site-photo site-photo--md" src="image1.jpg" alt="PARE HEP" loading="eager" fetchpriority="high" decoding="async"/>
   </div>
   <div class="btn-row">
     <span></span>
@@ -240,7 +281,7 @@
 <!-- ── PAGE: Safety Policy ── -->
 <div class="section" id="sec-policy">
   <div class="card">
-    <h2><img class="site-photo site-photo--md" src="image2.jpg" alt="Committed to No Harm"/></h2>
+    <h2><img class="site-photo site-photo--md" src="image2.jpg" alt="Committed to No Harm" loading="lazy" decoding="async"/></h2>
     <div class="alert alert-safe"><strong>"No one gets hurt – That's the goal."</strong><br/>At ANDRITZ, excellence begins with Health and Safety. We protect everyone we impact — employees, contractors, and visitors.</div>
     <p>Safety is not separate from work — it is built into everything we do. Safety comes before short-term targets or pressure. We speak up, take action, and look out for each other.</p>
     <h3>What this means for everyone on site:</h3>
@@ -275,7 +316,7 @@
 <!-- ── PAGE: 8 Life-Saving Rules ── -->
 <div class="section" id="sec-rules">
   <div class="card">
-    <h2><span class="icon">&#128737;</span>The 8 Life-Saving Rules</h2>
+    <!-- <h2><span class="icon">&#128737;</span>The 8 Life-Saving Rules</h2>
     <div class="alert alert-danger"><strong>&#9888;&#65039; Violation of any Life-Saving Rule is a serious safety breach and may result in immediate removal from site.</strong></div>
     <div class="rules-grid">
       <div class="rule-card"><div class="rule-num">Rule 1</div><div class="rule-title">&#128203; Permit to Work</div><p>Obtain a valid permit before starting any critical activity. Permits ensure risks are identified and managed.</p></div>
@@ -286,15 +327,49 @@
       <div class="rule-card"><div class="rule-num">Rule 6</div><div class="rule-title">&#129504; Be Ready for Action</div><p>Be physically and mentally fit. Never work under the influence of alcohol, drugs, or any impairing substance.</p></div>
       <div class="rule-card"><div class="rule-num">Rule 7</div><div class="rule-title">&#128663; Drive Safely</div><p>Ensure all vehicles are in good condition. Drivers must follow all regulations. Only site vehicles enter the powerhouse.</p></div>
       <div class="rule-card"><div class="rule-num">Rule 8</div><div class="rule-title">&#128682; Confined Spaces</div><p>Conduct atmospheric tests, have a qualified watchperson, prepare a rescue plan, and use correct equipment from the permit.</p></div>
-    </div>
+    </div> -->
+      <h2>Visitor Safety Instructions</h2>
+
+<strong>Mandatory</strong>
+<ul>
+    <li>Safety Helmet, Safety Shoes, and Reflective Jacket are mandatory while on site.</li>
+    <li>COVID safety measures shall be followed at all times.</li>
+    <li>Only authorized site vehicles are permitted to enter the powerhouse.</li>
+    <li>Entry without a valid ID card is strictly prohibited.</li>
+    <li>Visitors must be accompanied by the concerned authorized person at all times.</li>
+    <li>By signing this document, you agree to comply with all site safety rules and instructions.</li>
+</ul>
+
+<strong>Do's</strong>
+<ul>
+    <li>If you are a Doctor or First Aider, please inform the Site Manager/HSE Advisor. Your assistance may be required during emergencies.</li>
+    <li>Follow all safety instructions and warning signs displayed in the work areas.</li>
+    <li>Use appropriate PPE as required for the area being visited.</li>
+    <li>Watch your step and avoid tripping over materials, tools, or other objects.</li>
+    <li>Remain alert and be aware of your surroundings at all times.</li>
+    <li>If you hear an emergency hooter or siren, follow the designated emergency exit signs and proceed to the assembly point. Stay calm, do not panic, and wait for further instructions.</li>
+    <li>If you observe any near miss, accident, incident, unsafe act, or unsafe condition, report it immediately to the HSE Advisor or Site Manager.</li>
+</ul>
+
+<strong>Don'ts</strong>
+<ul>
+    <li>Do not enter the powerhouse unless authorized by Security.</li>
+    <li>Do not enter excavations, confined spaces (such as pipes, inlets, or manholes), or approach hazardous materials without proper authorization and training.</li>
+    <li>Do not enter any unauthorized or restricted area.</li>
+    <li>Do not touch or operate any equipment, materials, or chemicals unless authorized to do so.</li>
+    <li>Do not carry cameras, laptops, storage devices, CDs, or other recording/media devices into the powerhouse without prior permission.</li>
+    <li>Smoking is prohibited within the site premises except in designated smoking areas.</li>
+    <li>Consumption of tobacco, gutka, or similar products is prohibited within the site premises.</li>
+    <li>Never touch any component, material, or chemical that may present hot surface, sharp edge, or chemical exposure hazards.</li>
+    <li>Do not work or stand near civil construction activities or excavated areas. Maintain a safe distance from construction equipment and moving vehicles.</li>
+</ul>
   </div>
   <div class="card">
     <P>Organisation Chart @ Pare HEP</P>
     <img
     src="Site Organisation Chart.jpg"
     alt="Organisation chart"
-    style="width:100%; max-width:800px; height:auto;"
-  >
+    style="width:100%; max-width:800px; height:auto;" loading="lazy" decoding="async">
   </div>
   <div class="btn-row">
     <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
@@ -304,7 +379,7 @@
 
 <!-- ── PAGE: Visitor Instructions + PPE ── -->
 <div class="section" id="sec-instructions">
-  <img class="site-photo site-photo--md" src="Hazards.png" alt="Hazards at Hydro Power Station"/>
+  <img class="site-photo site-photo--md" src="Hazards.png" alt="Hazards at Hydro Power Station" loading="lazy" decoding="async"/>
 
   <div class="card">
     <h2><span class="icon">&#128204;</span>Visitor Instructions</h2>
@@ -333,11 +408,11 @@
       </ul>
       <p style="margin-top:14px;"><strong>Emergency Escape Routes in HEP</strong></p>
       <div class="emg-grid">
-        <img class="site-photo site-photo--fixed-h" src="Upstream view Landscape.jpg" alt="Upstream view landscape"/>
-        <img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV floor"/>
-        <img class="site-photo site-photo--xs" src="Turbine Floor Top View.jpg" alt="Turbine floor top view"/>
-        <img class="site-photo site-photo--xs" src="Generator Floor.jpg" alt="Generator floor"/>
-        <img class="site-photo site-photo--xs" src="Service Bay.jpg" alt="Service bay"/>
+        <img class="site-photo site-photo--fixed-h" src="Upstream view Landscape.jpg" alt="Upstream view landscape" loading="lazy" decoding="async"/>
+        <img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV floor" loading="lazy" decoding="async"/>
+        <img class="site-photo site-photo--xs" src="Turbine Floor Top View.jpg" alt="Turbine floor top view" loading="lazy" decoding="async"/>
+        <img class="site-photo site-photo--xs" src="Generator Floor.jpg" alt="Generator floor" loading="lazy" decoding="async"/>
+        <img class="site-photo site-photo--xs" src="Service Bay.jpg" alt="Service bay" loading="lazy" decoding="async"/>
       </div>
     </div>
 
@@ -368,14 +443,14 @@
     <p><strong>Site Facilities</strong></p>
     <div class="emg-grid">
       <div class="emg-card">
-        <img class="site-photo site-photo--sm" src="Site Facilities.png" alt="Site facilities"/>
+        <img class="site-photo site-photo--sm" src="Site Facilities.png" alt="Site facilities" loading="lazy" decoding="async"/>
       </div>
       <div class="emg-card">
-        <img class="site-photo site-photo--sm" src="Fire tendor.png" alt="Fire tender"/>
+        <img class="site-photo site-photo--sm" src="Fire tendor.png" alt="Fire tender" loading="lazy" decoding="async"/>
         <p>Fire Tender</p>
       </div>
       <div class="emg-card">
-        <img class="site-photo site-photo--fixed-h-sm" src="Recreational Centre.png" alt="Recreational centre"/>
+        <img class="site-photo site-photo--fixed-h-sm" src="Recreational Centre.png" alt="Recreational centre" loading="lazy" decoding="async"/>
         <p>Recreational Centre</p>
       </div>
     </div>
@@ -577,12 +652,10 @@
         <strong>&#128202; Entry recorded in site visitor log.</strong><br/>
         Your details have been submitted via the Google Form to the HSE team.
       </div>
-      <div> <img
-    src="image3.jpg"
-    alt="PPE Display"
-    style="width:100%; max-width:400px; height:auto;"
-  >
-      <button class="btn btn-primary" style="margin-top:20px;" id="btn-print">&#128438; Print / Save Pass</button>
+      <div>
+        <img class="site-photo site-photo--sm" style="margin:0 auto;" src="image3.jpg" alt="PPE Display" loading="lazy" decoding="async"/>
+        <button class="btn btn-primary" style="margin-top:20px;" id="btn-print">&#128438; Print / Save Pass</button>
+      </div>
     </div>
   </div>
 </div>
