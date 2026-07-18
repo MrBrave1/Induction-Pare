@@ -354,7 +354,7 @@
 
   <div class="btn-row">
     <button class="btn btn-secondary" data-goto="3">&#8592; Back</button>
-    <button class="btn btn-primary" data-goto="5">Next: Knowledge Check &#8594;</button>
+    <button class="btn btn-primary" id="btn-mandatory-next" data-goto="5" disabled>Next: Knowledge Check &#8594;</button>
   </div>
 </div>
 
@@ -586,15 +586,16 @@
     $(`#${targetId}`).classList.add('active');
   }
 
-  function updateMandatoryStatus() {
-    const boxes = $$('[data-mandatory-check]');
-    const allChecked = boxes.every((b) => b.checked);
-    const status = $('#mandatory-status');
-    status.textContent = allChecked
-      ? 'All mandatory requirements acknowledged.'
-      : 'Please tick all items above to proceed.';
-    status.style.color = allChecked ? 'var(--safe)' : 'var(--gray)';
-  }
+ function updateMandatoryStatus() {
+  const boxes = $$('[data-mandatory-check]');
+  const allChecked = boxes.every((b) => b.checked);
+  const status = $('#mandatory-status');
+  status.textContent = allChecked
+    ? 'All mandatory requirements acknowledged.'
+    : 'Please tick all items above to proceed.';
+  status.style.color = allChecked ? 'var(--safe)' : 'var(--gray)';
+  $('#btn-mandatory-next').disabled = !allChecked;   // ← new line
+}
 
   function checkQuiz() {
     let score = 0;
