@@ -182,8 +182,32 @@
   <span id="step-label">Step 1 / 7</span>
 </div>
 
-<!-- ── SECTION 1 – Welcome ── -->
-<div class="section active" id="sec1">
+<!--
+  ══════════════════════════════════════════════════════════════════════════
+  HOW TO ADD A NEW PAGE / STEP
+  ══════════════════════════════════════════════════════════════════════════
+  Steps are now read straight from the DOM in the order they appear on the
+  page — there are no hardcoded step numbers anywhere. To insert a new page:
+
+    1. Copy a "<div class="section" id="sec-...">...</div>" block below and
+       paste it wherever you want it to appear (order = DOM order = flow).
+    2. Give it a unique, descriptive id (e.g. id="sec-fire-safety").
+    3. Add Back / Next buttons inside it using:
+         <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+         <button class="btn btn-primary"  data-goto="next">Next &#8594;</button>
+    4. That's it. The progress bar, "Step X / N" label, and every other
+       page's Back/Next buttons automatically adjust — nothing else needs
+       to be renumbered or edited.
+
+  If a Next button should stay disabled until some condition is met (like
+  the mandatory checklist or quiz), just give it data-goto="next" and
+  toggle its "disabled" attribute from your own JS, same pattern as
+  #btn-mandatory-next and #btn-quiz-next below.
+  ══════════════════════════════════════════════════════════════════════════
+-->
+
+<!-- ── PAGE: Welcome ── -->
+<div class="section active" id="sec-welcome">
   <div class="hero-card">
     <h2>Welcome to PARE HEP Site</h2>
     <p>This short induction ensures your visit is safe. Please read every section carefully.<br/>Completion is <strong>mandatory</strong> before entering the powerhouse.</p>
@@ -209,12 +233,12 @@
   </div>
   <div class="btn-row">
     <span></span>
-    <button class="btn btn-primary" data-goto="2">Next: Safety Commitment &#8594;</button>
+    <button class="btn btn-primary" data-goto="next">Next: Safety Commitment &#8594;</button>
   </div>
 </div>
 
-<!-- ── SECTION 2 – Safety Policy ── -->
-<div class="section" id="sec2">
+<!-- ── PAGE: Safety Policy ── -->
+<div class="section" id="sec-policy">
   <div class="card">
     <h2><img class="site-photo site-photo--md" src="image2.jpg" alt="Committed to No Harm"/></h2>
     <div class="alert alert-safe"><strong>"No one gets hurt – That's the goal."</strong><br/>At ANDRITZ, excellence begins with Health and Safety. We protect everyone we impact — employees, contractors, and visitors.</div>
@@ -243,13 +267,13 @@
     </ul>
   </div>
   <div class="btn-row">
-    <button class="btn btn-secondary" data-goto="1">&#8592; Back</button>
-    <button class="btn btn-primary" data-goto="3">Next: 8 Life-Saving Rules &#8594;</button>
+    <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+    <button class="btn btn-primary" data-goto="next">Next: 8 Life-Saving Rules &#8594;</button>
   </div>
 </div>
 
-<!-- ── SECTION 3 – 8 Life-Saving Rules ── -->
-<div class="section" id="sec3">
+<!-- ── PAGE: 8 Life-Saving Rules ── -->
+<div class="section" id="sec-rules">
   <div class="card">
     <h2><span class="icon">&#128737;</span>The 8 Life-Saving Rules</h2>
     <div class="alert alert-danger"><strong>&#9888;&#65039; Violation of any Life-Saving Rule is a serious safety breach and may result in immediate removal from site.</strong></div>
@@ -273,13 +297,13 @@
   >
   </div>
   <div class="btn-row">
-    <button class="btn btn-secondary" data-goto="2">&#8592; Back</button>
-    <button class="btn btn-primary" data-goto="4">Next: Visitor Instructions &#8594;</button>
+    <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+    <button class="btn btn-primary" data-goto="next">Next: Visitor Instructions &#8594;</button>
   </div>
 </div>
 
-<!-- ── SECTION 4 – Visitor Instructions + PPE ── -->
-<div class="section" id="sec4">
+<!-- ── PAGE: Visitor Instructions + PPE ── -->
+<div class="section" id="sec-instructions">
   <img class="site-photo site-photo--md" src="Hazards.png" alt="Hazards at Hydro Power Station"/>
 
   <div class="card">
@@ -358,13 +382,13 @@
   </div>
 
   <div class="btn-row">
-    <button class="btn btn-secondary" data-goto="3">&#8592; Back</button>
-    <button class="btn btn-primary" id="btn-mandatory-next" data-goto="5" disabled>Next: Knowledge Check &#8594;</button>
+    <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+    <button class="btn btn-primary" id="btn-mandatory-next" data-goto="next" disabled>Next: Knowledge Check &#8594;</button>
   </div>
 </div>
 
-<!-- ── SECTION 5 – Quiz ── -->
-<div class="section" id="sec5">
+<!-- ── PAGE: Quiz ── -->
+<div class="section" id="sec-quiz">
   <div class="card">
     <h2><span class="icon">&#128221;</span>Quick Knowledge Check</h2>
     <p style="margin-bottom:20px;font-size:14px;">Answer all questions correctly to proceed. You may retry if needed.</p>
@@ -412,13 +436,13 @@
     </div>
   </div>
   <div class="btn-row">
-    <button class="btn btn-secondary" data-goto="4">&#8592; Back</button>
-    <button class="btn btn-primary" id="btn-quiz-next" disabled data-goto="6">Next: Register Entry &#8594;</button>
+    <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+    <button class="btn btn-primary" id="btn-quiz-next" disabled data-goto="next">Next: Register Entry &#8594;</button>
   </div>
 </div>
 
-<!-- ── SECTION 6 – Visitor Registration Form ── -->
-<div class="section" id="sec6">
+<!-- ── PAGE: Visitor Registration Form ── -->
+<div class="section" id="sec-register">
   <div class="card">
     <h2><span class="icon">&#128203;</span>Visitor Entry Registration</h2>
     <p style="font-size:13.5px;margin-bottom:20px;color:var(--gray);">All fields marked <span style="color:var(--danger);">*</span> are required.</p>
@@ -529,14 +553,14 @@
     <div id="form-error" class="alert alert-danger" style="display:none;margin-top:12px;"></div>
 
     <div class="btn-row">
-      <button class="btn btn-secondary" data-goto="5">&#8592; Back</button>
+      <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
       <button class="btn btn-success" id="btn-submit" disabled>&#10004; Submit &amp; Complete Induction</button>
     </div>
   </div>
 </div>
 
-<!-- ── SECTION 7 – Success ── -->
-<div class="section" id="sec7">
+<!-- ── PAGE: Success ── -->
+<div class="section" id="sec-success">
   <div class="card">
     <div class="success-screen">
       <div class="tick">&#9989;</div>
@@ -570,7 +594,6 @@
 (function () {
   'use strict';
 
-  const TOTAL_STEPS = 7;
   const QUIZ_ANSWERS = { q1: 'b', q2: 'c', q3: 'c', q4: 'b' };
   const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSezJ6f_pB3bPPvcZL1w_t-cwKQ6qXnn4BLaxQONdD_hBX0MKA/formResponse';
 
@@ -581,12 +604,32 @@
   const stepLabel = $('#step-label');
   const submitOverlay = $('#submit-overlay');
 
-  function goTo(step) {
-    $$('.section').forEach((s) => s.classList.remove('active'));
-    $(`#sec${step}`).classList.add('active');
-    progressFill.style.width = `${((step - 1) / (TOTAL_STEPS - 1)) * 100}%`;
-    stepLabel.textContent = `Step ${step} / ${TOTAL_STEPS}`;
+  // ─────────────────────────────────────────────────────────────────────
+  // Step engine: the list of steps is simply every ".section" element,
+  // read in DOM order. Add/remove/reorder pages by editing the HTML only —
+  // this list (and therefore the progress bar / step count) updates itself.
+  // ─────────────────────────────────────────────────────────────────────
+  const sections = $$('.section');
+  let currentIndex = Math.max(0, sections.findIndex((s) => s.classList.contains('active')));
+
+  function showStep(index) {
+    sections.forEach((s) => s.classList.remove('active'));
+    sections[index].classList.add('active');
+    progressFill.style.width = `${(index / (sections.length - 1)) * 100}%`;
+    stepLabel.textContent = `Step ${index + 1} / ${sections.length}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // target: "next", "prev", or a specific section id (e.g. "sec-success")
+  function goTo(target) {
+    let index;
+    if (target === 'next') index = currentIndex + 1;
+    else if (target === 'prev') index = currentIndex - 1;
+    else index = sections.findIndex((s) => s.id === target);
+
+    if (index < 0 || index >= sections.length) return;
+    currentIndex = index;
+    showStep(currentIndex);
   }
 
   function switchTab(button, targetId) {
@@ -596,16 +639,16 @@
     $(`#${targetId}`).classList.add('active');
   }
 
- function updateMandatoryStatus() {
-  const boxes = $$('[data-mandatory-check]');
-  const allChecked = boxes.every((b) => b.checked);
-  const status = $('#mandatory-status');
-  status.textContent = allChecked
-    ? 'All mandatory requirements acknowledged.'
-    : 'Please tick all items above to proceed.';
-  status.style.color = allChecked ? 'var(--safe)' : 'var(--gray)';
-  $('#btn-mandatory-next').disabled = !allChecked;   // ← new line
-}
+  function updateMandatoryStatus() {
+    const boxes = $$('[data-mandatory-check]');
+    const allChecked = boxes.every((b) => b.checked);
+    const status = $('#mandatory-status');
+    status.textContent = allChecked
+      ? 'All mandatory requirements acknowledged.'
+      : 'Please tick all items above to proceed.';
+    status.style.color = allChecked ? 'var(--safe)' : 'var(--gray)';
+    $('#btn-mandatory-next').disabled = !allChecked;
+  }
 
   function checkQuiz() {
     let score = 0;
@@ -701,17 +744,21 @@
 
     setTimeout(() => {
       submitOverlay.classList.remove('show');
-      goTo(7);
+      goTo('sec-success');
     }, 2500);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Set the initial progress bar / step label correctly on load
+    showStep(currentIndex);
+
     // Pre-fill today's date
     $('#f-date').value = new Date().toISOString().split('T')[0];
 
-    // Step navigation (Back / Next buttons)
+    // Step navigation (Back / Next buttons) — works for "prev", "next",
+    // or a direct section id, wherever that button happens to live in the DOM.
     $$('[data-goto]').forEach((btn) => {
-      btn.addEventListener('click', () => goTo(Number(btn.dataset.goto)));
+      btn.addEventListener('click', () => goTo(btn.dataset.goto));
     });
 
     // Instruction tabs
