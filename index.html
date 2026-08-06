@@ -2,204 +2,191 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<!-- viewport intentionally allows pinch-zoom (no maximum-scale / user-scalable=no)
-     while still fitting the layout to the device width on first load -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="color-scheme" content="light"/>
 <meta name="theme-color" content="#0A1628"/>
 <meta name="description" content="PARE HEP 2×55 MW Visitor Safety Induction – ANDRITZ O&M Pvt. Ltd."/>
 <title>Visitor Safety Induction – PARE HEP 2×55 MW</title>
-<!-- Speed up the very first paint of the hero photo on the welcome screen -->
 <link rel="preload" as="image" href="image1.jpg" fetchpriority="high"/>
 <style>
   :root {
     --navy: #0A1628; --blue: #0D3B6E; --steel: #1A5276;
     --accent: #F39C12; --danger: #C0392B; --safe: #1E8449;
     --light: #EBF5FB; --white: #FFFFFF; --gray: #7F8C8D;
-    --border: #D5D8DC; --text: #1C2833;
+    --border: #D5D8DC; --text: #1C2833; --bg: #F4F6F7;
   }
+  
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  
   html {
     scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%; /* stop iOS auto-inflating text; we handle scaling ourselves */
+    -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
+  
   body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #F0F3F4; color: var(--text);
-    overflow-x: hidden; /* guards against any accidental horizontal scroll on small/zoomed screens */
-    line-height: 1.5;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
   }
-  /* Safety net: any image anywhere (even without .site-photo) stays inside its container */
-  img { max-width: 100%; height: auto; }
-  /* Wide data tables scroll horizontally on narrow screens instead of squeezing/breaking */
-  .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
+  img { max-width: 100%; height: auto; display: block; }
+  
+  /* Tables */
+  .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--white); border-radius: 8px; overflow: hidden; }
+  th { background: var(--blue); color: white; padding: 12px 16px; text-align: left; font-weight: 600; }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #F8F9FA; }
+
+  /* Header */
   header {
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--steel) 100%);
     color: white; padding: 40px 24px 32px; text-align: center;
     border-bottom: 4px solid var(--accent);
   }
-  .badge {
-    display: inline-block; background: white; color: var(--navy);
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 4px 14px;
-    border-radius: 2px; text-transform: uppercase; margin-bottom: 16px;
-  }
-  header h1 { font-size: clamp(22px, 5vw, 36px); font-weight: 800; letter-spacing: -0.5px; }
-  header p { margin-top: 8px; font-size: 14px; color: #AED6F1; }
+  header h1 { font-size: clamp(24px, 5vw, 36px); font-weight: 800; letter-spacing: -0.5px; margin-top: 16px; }
+  header h2 { font-size: clamp(16px, 3vw, 20px); font-weight: 400; color: #AED6F1; margin-top: 8px; }
+  .header-logo { max-width: 150px; margin: 0 auto; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
+  /* Progress Bar */
   #progress-bar {
     position: sticky; top: 0; z-index: 100;
-    background: var(--navy); padding: 10px 20px;
-    display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    background: var(--navy); padding: 12px 24px;
+    display: flex; align-items: center; gap: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
-  #progress-bar span { color: #AED6F1; font-size: 12px; white-space: nowrap; }
-  .progress-track { flex: 1; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
-  #step-label { color: white; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  #progress-bar span { color: #AED6F1; font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .progress-track { flex: 1; height: 8px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; width: 0%; }
+  #step-label { color: white; font-weight: 600; }
 
-  .section { display: none; max-width: 860px; margin: 28px auto; padding: 0 16px; }
-  .section.active { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+  /* Sections & Cards */
+  .section { display: none; max-width: 860px; margin: 32px auto; padding: 0 16px; }
+  .section.active { display: block; animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
 
   .card {
-    background: var(--white); border-radius: 10px; padding: 28px 28px 24px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 20px;
+    background: var(--white); border-radius: 12px; padding: 32px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 24px; border: 1px solid #E5E8E8;
   }
-  .card h2 { font-size: 20px; font-weight: 700; color: var(--blue); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-  .card h2 .icon { font-size: 24px; }
-  .card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin: 16px 0 8px; }
-  .card p, .card li { font-size: 14px; line-height: 1.7; color: #2C3E50; }
-  .card ul, .card ol { padding-left: 20px; }
-  .card li { margin-bottom: 6px; }
-
-  /* Reusable photo utility — replaces repeated inline styles on every image */
-  .site-photo { display: block; width: 100%; height: auto; border-radius: 6px; }
-  .site-photo--md  { max-width: 800px; }
-  .site-photo--sm  { max-width: 400px; }
-  .site-photo--xs  { max-width: 300px; }
-  .site-photo--fixed-h { width: auto; height: 150px; max-width: 100%; }
-  .site-photo--fixed-h-sm { width: auto; height: 100px; max-width: 100%; }
+  .card h2 { font-size: 22px; font-weight: 700; color: var(--blue); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin: 24px 0 12px; border-bottom: 2px solid var(--light); padding-bottom: 8px;}
+  .card p, .card li { font-size: 15px; color: #34495E; margin-bottom: 8px; }
+  .card ul, .card ol { padding-left: 24px; margin-bottom: 16px; }
 
   .hero-card {
     background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
-    color: white; border-radius: 10px; padding: 40px 28px; text-align: center;
-    margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    color: white; border-radius: 12px; padding: 40px 32px; text-align: center;
+    margin-bottom: 24px; box-shadow: 0 6px 24px rgba(13,59,110,0.2);
   }
-  .hero-card .big-icon { font-size: 56px; margin-bottom: 16px; }
-  .hero-card h2 { font-size: 26px; font-weight: 800; color: white; margin-bottom: 8px; }
-  .hero-card p { color: #AED6F1; font-size: 15px; line-height: 1.6; }
+  .hero-card h2 { font-size: 28px; font-weight: 800; color: white; margin-bottom: 12px; justify-content: center; border: none; }
+  .hero-card p { color: #AED6F1; font-size: 16px; line-height: 1.6; }
 
-  .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
-  .rule-card { background: var(--light); border-left: 4px solid var(--blue); border-radius: 6px; padding: 14px 16px; }
-  .rule-card .rule-num { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
-  .rule-card .rule-title { font-size: 14px; font-weight: 700; color: var(--navy); margin: 4px 0; }
-  .rule-card p { font-size: 12px; color: #555; line-height: 1.5; }
+  /* Image Utilities */
+  .site-photo { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 16px; }
+  .site-photo--md { max-width: 800px; margin: 0 auto 16px; }
+  .site-photo--sm { max-width: 400px; margin: 0 auto 16px; }
+  .site-photo--xs { max-width: 300px; margin: 0 auto 16px; }
 
-  .ppe-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-  .ppe-item { display: flex; align-items: center; gap: 10px; background: var(--light); border-radius: 8px; padding: 12px 16px; min-width: 160px; flex: 1; }
-  .ppe-item .ppe-icon { font-size: 28px; }
-  .ppe-item span { font-size: 13px; font-weight: 600; color: var(--navy); }
+  /* Alerts */
+  .alert { border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; font-size: 14.5px; }
+  .alert-danger { background: #FDEDEC; border-left: 5px solid var(--danger); color: #7B241C; }
+  .alert-safe { background: #EAFAF1; border-left: 5px solid var(--safe); color: #145A32; }
+  .alert-warn { background: #FEF9E7; border-left: 5px solid var(--accent); color: #7D6608; }
 
-  .alert { border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; font-size: 13.5px; line-height: 1.6; }
-  .alert-danger { background: #FDEDEC; border-left: 4px solid var(--danger); color: #7B241C; }
-  .alert-safe { background: #EAFAF1; border-left: 4px solid var(--safe); color: #145A32; }
-  .alert-warn { background: #FEF9E7; border-left: 4px solid var(--accent); color: #7D6608; }
-  .alert strong { font-weight: 700; }
-
-  .checklist { list-style: none; padding: 0; }
-  .checklist li { padding: 0; border-radius: 6px; margin-bottom: 6px; background: #FDFEFE; border: 1px solid var(--border); }
-  .checklist label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; font-size: 13.5px; cursor: pointer; }
-  .checklist input[type="checkbox"] { margin-top: 2px; accent-color: var(--blue); transform: scale(1.2); flex-shrink: 0; }
-
-  .form-group { margin-bottom: 18px; }
-  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-  .form-group label .req { color: var(--danger); }
-  .form-group input, .form-group select {
-    width: 100%; border: 1.5px solid var(--border); border-radius: 6px;
-    padding: 10px 12px; font-size: 14px; color: var(--text); transition: border-color 0.2s; background: white;
-  }
-  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(13,59,110,0.1); }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  @media(max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
-
-  .consent-box { background: #F4F6F7; border: 2px solid var(--border); border-radius: 8px; padding: 20px; margin: 20px 0; }
-  .consent-box p { font-size: 13px; line-height: 1.7; color: #444; }
-  .consent-check { display: flex; gap: 12px; align-items: flex-start; margin-top: 14px; padding: 12px; background: white; border-radius: 6px; border: 1.5px solid var(--border); }
-  .consent-check input { transform: scale(1.3); margin-top: 2px; flex-shrink: 0; accent-color: var(--blue); }
-  .consent-check label { font-size: 13px; font-weight: 600; color: var(--navy); line-height: 1.5; }
-
-  .btn-row { display: flex; gap: 12px; justify-content: space-between; margin-top: 24px; flex-wrap: wrap; }
-  .btn { padding: 12px 28px; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; letter-spacing: 0.3px; }
-  .btn-primary { background: var(--blue); color: white; }
-  .btn-primary:hover { background: var(--navy); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(13,59,110,0.3); }
-  .btn-secondary { background: var(--border); color: var(--navy); }
-  .btn-secondary:hover { background: #C0C0C0; }
-  .btn-success { background: var(--safe); color: white; }
-  .btn-success:hover { background: #155A2C; transform: translateY(-1px); }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-
-  .success-screen { text-align: center; padding: 40px 20px; }
-  .success-screen .tick { font-size: 64px; margin-bottom: 16px; }
-  .success-screen h2 { font-size: 24px; color: var(--safe); font-weight: 800; }
-  .success-screen p { font-size: 15px; color: var(--gray); margin-top: 10px; line-height: 1.6; }
-  .pass-id { display: inline-block; background: var(--light); border: 2px solid var(--blue); border-radius: 8px; padding: 16px 28px; margin: 20px auto; font-size: 22px; font-weight: 800; color: var(--navy); letter-spacing: 2px; }
-
-  .emg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 14px; }
-  .emg-card { background: #FDEDEC; border-radius: 8px; padding: 16px; text-align: center; border: 1px solid #F1948A; }
-  .emg-card .emg-icon { font-size: 30px; }
-  .emg-card .emg-label { font-size: 12px; color: #922B21; font-weight: 700; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .emg-card .emg-num { font-size: 18px; color: var(--danger); font-weight: 800; margin-top: 4px; }
-  .emg-card p { margin-top: 6px; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 10px; }
-  th { background: var(--blue); color: white; padding: 10px 14px; text-align: left; font-weight: 700; }
-  td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
-  tr:nth-child(even) td { background: #F8F9FA; }
-
-  .quiz-q { background: var(--light); border-radius: 8px; padding: 18px 20px; margin-bottom: 16px; }
-  .quiz-q p { font-weight: 600; font-size: 14px; margin-bottom: 12px; }
-  .quiz-opt { display: flex; flex-direction: column; gap: 8px; }
-  .quiz-opt label { display: flex; align-items: center; gap: 10px; font-size: 13.5px; cursor: pointer; padding: 8px 12px; border-radius: 6px; border: 1.5px solid var(--border); background: white; transition: border-color 0.2s; }
-  .quiz-opt label:hover { border-color: var(--blue); }
-  .quiz-opt input[type="radio"] { accent-color: var(--blue); }
-  .quiz-feedback { font-size: 13px; font-weight: 700; margin-top: 8px; padding: 6px 12px; border-radius: 4px; display: none; }
-  .correct { background: #EAFAF1; color: var(--safe); }
-  .wrong { background: #FDEDEC; color: var(--danger); }
-
-  .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .tab-btn { padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 12px; font-weight: 700; cursor: pointer; background: white; color: var(--navy); transition: all 0.2s; }
-  .tab-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
-  .tab-pane { display: none; }
+  /* Interactive Elements (Tabs, Checklists, Forms) */
+  .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn { padding: 10px 20px; border-radius: 24px; border: 1.5px solid var(--border); font-size: 14px; font-weight: 600; cursor: pointer; background: white; color: var(--navy); transition: all 0.2s; }
+  .tab-btn:hover { border-color: var(--blue); background: var(--light); }
+  .tab-btn.active { background: var(--blue); color: white; border-color: var(--blue); box-shadow: 0 4px 10px rgba(13,59,110,0.2); }
+  .tab-pane { display: none; animation: fadeIn 0.3s ease; }
   .tab-pane.active { display: block; }
 
-  #submit-overlay { display: none; position: fixed; inset: 0; background: rgba(10,22,40,0.8); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  .checklist { list-style: none; padding: 0; margin-bottom: 16px; }
+  .checklist li { margin-bottom: 8px; background: #FDFEFE; border: 1.5px solid var(--border); border-radius: 8px; transition: border-color 0.2s; }
+  .checklist li:hover { border-color: var(--blue); }
+  .checklist label { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; font-size: 14.5px; cursor: pointer; font-weight: 500; color: var(--navy); }
+  .checklist input[type="checkbox"] { margin-top: 3px; accent-color: var(--blue); transform: scale(1.3); flex-shrink: 0; cursor: pointer; }
+
+  /* Forms */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .form-group label .req { color: var(--danger); }
+  .form-group input, .form-group select {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; font-size: 15px; color: var(--text); background: white; transition: all 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(13,59,110,0.1); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  
+  .consent-box { background: var(--light); border: 1.5px solid #AED6F1; border-radius: 10px; padding: 24px; margin: 24px 0; }
+  .consent-check { display: flex; gap: 14px; align-items: flex-start; margin-top: 20px; padding: 16px; background: white; border-radius: 8px; border: 1.5px solid var(--border); }
+  .consent-check input { transform: scale(1.4); margin-top: 2px; flex-shrink: 0; accent-color: var(--blue); cursor: pointer; }
+  .consent-check label { font-size: 14px; font-weight: 600; color: var(--navy); cursor: pointer; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 16px; justify-content: space-between; margin-top: 32px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 24px; }
+  .btn { padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; letter-spacing: 0.5px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-primary { background: var(--blue); color: white; }
+  .btn-primary:hover:not(:disabled) { background: var(--navy); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(13,59,110,0.25); }
+  .btn-secondary { background: #E5E8E8; color: var(--navy); }
+  .btn-secondary:hover:not(:disabled) { background: #D5D8DC; }
+  .btn-success { background: var(--safe); color: white; }
+  .btn-success:hover:not(:disabled) { background: #155A2C; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30,132,73,0.25); }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; background: var(--gray); color: white; }
+
+  /* Emergency Grid */
+  .emg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; }
+  .emg-card { background: var(--white); border-radius: 10px; padding: 20px; text-align: center; border: 1.5px solid #F1948A; box-shadow: 0 4px 12px rgba(231,76,60,0.08); }
+  .emg-card .emg-icon { font-size: 36px; margin-bottom: 8px; }
+  .emg-card .emg-label { font-size: 13px; color: #922B21; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .emg-card .emg-num { font-size: 18px; color: var(--danger); font-weight: 800; margin-top: 8px; }
+  .emg-card a { color: inherit; text-decoration: none; }
+  .emg-card a:hover { text-decoration: underline; }
+
+  /* Quiz */
+  .quiz-q { background: var(--bg); border-radius: 10px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--border); }
+  .quiz-q p { font-weight: 700; font-size: 16px; margin-bottom: 16px; color: var(--navy); }
+  .quiz-opt { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-opt label { display: flex; align-items: center; gap: 12px; font-size: 15px; cursor: pointer; padding: 12px 16px; border-radius: 8px; border: 1.5px solid var(--border); background: white; transition: all 0.2s; font-weight: 500; }
+  .quiz-opt label:hover { border-color: var(--blue); background: var(--light); }
+  .quiz-opt input[type="radio"] { accent-color: var(--blue); transform: scale(1.2); }
+  .quiz-feedback { font-size: 14px; font-weight: 700; margin-top: 12px; padding: 10px 16px; border-radius: 6px; display: none; }
+  .correct { background: #EAFAF1; color: var(--safe); border-left: 4px solid var(--safe); }
+  .wrong { background: #FDEDEC; color: var(--danger); border-left: 4px solid var(--danger); }
+
+  /* Success Screen */
+  .success-screen { text-align: center; padding: 20px 0; }
+  .success-screen .tick { font-size: 72px; margin-bottom: 20px; line-height: 1; }
+  .success-screen h2 { font-size: 32px; color: var(--safe); font-weight: 800; margin-bottom: 16px;}
+  .pass-id { display: inline-block; background: var(--light); border: 2.5px dashed var(--blue); border-radius: 12px; padding: 20px 40px; margin: 32px auto; font-size: 28px; font-weight: 900; color: var(--navy); letter-spacing: 3px; }
+
+  /* Loading Overlay */
+  #submit-overlay { display: none; position: fixed; inset: 0; background: rgba(10,22,40,0.9); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 20px; backdrop-filter: blur(4px); }
   #submit-overlay.show { display: flex; }
-  .spinner { width: 52px; height: 52px; border: 5px solid rgba(255,255,255,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  .spinner { width: 60px; height: 60px; border: 6px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  #submit-overlay p { color: white; font-size: 15px; font-weight: 600; }
+  #submit-overlay p { color: white; font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
 
-  /* ── Small-screen refinements (phones, and any viewport zoomed in) ── */
-  @media (max-width: 480px) {
-    header { padding: 28px 16px 24px; }
-    .card { padding: 20px 18px 18px; }
-    .card h2 { font-size: 18px; }
-    .hero-card { padding: 28px 20px; }
-    .hero-card h2 { font-size: 21px; }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    header { padding: 32px 16px 24px; }
+    .card { padding: 24px 20px; }
     .btn-row { flex-direction: column-reverse; }
-    .btn-row .btn { width: 100%; text-align: center; }
-    th, td { padding: 8px 10px; font-size: 12.5px; }
-    .pass-id { font-size: 18px; padding: 14px 18px; word-break: break-all; }
+    .btn-row .btn { width: 100%; }
+    .pass-id { font-size: 22px; padding: 16px 24px; width: 100%; word-break: break-all; }
   }
 
-  /* Respect users who prefer reduced motion (also cheaper to render) */
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .section.active, .btn { animation: none !important; transition: none !important; }
+  @media print { 
+    #progress-bar, .btn-row, .tabs, .hero-card { display: none !important; }
+    .card { box-shadow: none; border: 1px solid #000; break-inside: avoid; }
+    body { background: white; }
   }
-
-  @media print { #progress-bar, .btn-row { display: none; } }
 </style>
 </head>
 <body>
@@ -210,96 +197,40 @@
 </div>
 
 <header>
-  <!--<div class="badge"> <img
-    src="Andritz logo.jpg"
-    alt="Andritz Logo"
-    style="width:100%; max-width:80px; height:auto;" loading="lazy" decoding="async"><br> ANDRITZ O&amp;M Pvt. Ltd.
-  </div> -->
-  <img class="site-photo site-photo--md" src="image2.jpg" alt="Committed to No Harm" style="margin: 0 auto;" loading="lazy" decoding="async"/>
+  <img class="header-logo site-photo" src="image2.jpg" alt="Andritz Hydro Logo" loading="lazy" decoding="async" onerror="this.style.display='none'"/>
   <h1>Andritz Hydro</h1>
-  <h2>Visitor Instruction</h2>
+  <h2>Visitor Safety Instruction – PARE HEP</h2>
 </header>
 
 <div id="progress-bar">
   <span>Progress</span>
   <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
-  <span id="step-label">Step 1 / 7</span>
+  <span id="step-label">Step 1 / 6</span>
 </div>
 
-<!--
-  ══════════════════════════════════════════════════════════════════════════
-  HOW TO ADD A NEW PAGE / STEP
-  ══════════════════════════════════════════════════════════════════════════
-  Steps are now read straight from the DOM in the order they appear on the
-  page — there are no hardcoded step numbers anywhere. To insert a new page:
-
-    1. Copy a "<div class="section" id="sec-...">...</div>" block below and
-       paste it wherever you want it to appear (order = DOM order = flow).
-    2. Give it a unique, descriptive id (e.g. id="sec-fire-safety").
-    3. Add Back / Next buttons inside it using:
-         <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
-         <button class="btn btn-primary"  data-goto="next">Next &#8594;</button>
-    4. That's it. The progress bar, "Step X / N" label, and every other
-       page's Back/Next buttons automatically adjust — nothing else needs
-       to be renumbered or edited.
-
-  If a Next button should stay disabled until some condition is met (like
-  the mandatory checklist or quiz), just give it data-goto="next" and
-  toggle its "disabled" attribute from your own JS, same pattern as
-  #btn-mandatory-next and #btn-quiz-next below.
-  ══════════════════════════════════════════════════════════════════════════
--->
-
-<!-- ── PAGE: Welcome ── -->
+<!-- ── PAGE 1: Welcome ── -->
 <div class="section active" id="sec-welcome">
   <div class="hero-card">
     <h2>Welcome to Pare HEP</h2>
     <p>This short induction ensures your visit is safe. Please read every section carefully.<br/>Completion is <strong>mandatory</strong> before entering the powerhouse.</p>
   </div>
+  
   <div class="card">
     <h2><span class="icon">&#127981;</span>PARE HEP Overview</h2>
     <div class="table-scroll">
-    <!--<table>
-      <tr><th>Detail</th><th>Information</th></tr>
-      <tr><td>Project</td><td>Run-off the River Hydro Power Station — River Pare</td></tr>
-      <tr><td>Capacity</td><td>110 MW (2&#xD7;55 MW Vertical Francis Turbines)</td></tr>
-      <tr><td>Rated Speed</td><td>187.5 RPM</td></tr>
-      <tr><td>Powerhouse Area</td><td>2,108 m^2</td></tr>
-         <tr><td>Restricted Areas</td><td>Switch Yard, Control room, Generator Floor, Turbine Floor, MIV Floor, Machine Hall and Service Bay</td></tr>
-      <tr><td>Client</td><td>NEEPCO</td></tr>
-      <tr><td>Contractor</td><td>Andritz O&amp;M Pvt. Ltd.</td></tr>
-      <tr><td>Operation Mode</td><td>Operation &amp; Maintenance (24&#xD7;7)</td></tr>
-      <tr><td>Site view</td><td><img class="site-photo site-photo--md" src="image1.jpg" alt="PARE HEP" loading="eager" fetchpriority="high" decoding="async"/></td></tr>
-    </table> -->
-    <table>
-      <tr><td>Site View</td></tr>
-      <img class="site-photo site-photo--md" src="image1.jpg" alt="PARE HEP"   loading="eager" fetchpriority="high" decoding="async"/>
-    <tr><td>Restricted Areas:</td>
-    <td>Switch Yard</td>
-    <td>Battery Room</td>
-    <td>TRC</td>
-    <td>CAT</td></tr>
-    </table>
+      <table>
+        <tr>
+          <th>Restricted Areas</th>
+          <th>Requirements</th>
+        </tr>
+        <tr>
+          <td>Switch Yard, Battery Room, TRC, CAT</td>
+          <td>Authorized Personnel Only</td>
+        </tr>
+      </table>
     </div>
+    <img class="site-photo site-photo--md" src="image1.jpg" alt="PARE HEP Site View" style="margin-top: 20px;" loading="eager" fetchpriority="high" decoding="async"/>
   </div>
-  <div class="card">
-   <!-- <h2><span class="icon">&#9200;</span>Our Motto</h2>
-    <img class="site-photo site-photo--md" src="Committed to No Harm.jpg" alt="Committed to No Harm" ;style="width:100%; max-width:autopx; height:100px; loading="eager" fetchpriority="high" decoding="async"/>
-  </div>-->
-  <h2><span class="icon">&#128203;</span>Quality Health, Safety, Environment &amp; Energy Policy Statement</h2>
-    <p>ANDRITZ QHSE &amp; Energy Policy – is unconditionally committed to compliance with all relevant legal requirements and applicable standards regarding health, safety, and environmental protection. Key commitments include:</p>
-    <ul style="margin-top:10px;">
-      <li>ISO 9001 – Quality Management</li>
-      <li>ISO 14001 – Environmental Management</li>
-      <li>ISO 45001 – Occupational Health &amp; Safety</li>
-      <li>ISO 50001 – Energy Management</li>
-      <li>&#9989; "Committed to No Harm" approach focused on preventing injuries and incidents.</li>
-      <li>&#9989; Implementation of 8 Life-Saving Rules, Behavior-Based Safety (BBS), and Leadership in Health &amp; Safety (LIHS).</li>
-      <li>&#9989; Continuous risk assessment, audits, inspections, and incident prevention.</li>
-      <li>&#9989; Reduction of environmental impact through emission control, waste management, and resource conservation.</li>
-      <li>&#9989; Efficient use of energy and continuous improvement in energy performance.</li>
-    </ul>
-    </div>
 
   <div class="btn-row">
     <span></span>
@@ -307,257 +238,141 @@
   </div>
 </div>
 
-<!-- ── PAGE: Safety Policy ── -->
+<!-- ── PAGE 2: Safety Policy ── -->
 <div class="section" id="sec-policy">
   <div class="card">
-    <h2><img class="site-photo site-photo--md" src="image2.jpg" alt="Committed to No Harm" loading="lazy" decoding="async"/></h2>
+    <h2><span class="icon">&#128680;</span> Committed to No Harm</h2>
     <div class="alert alert-safe"><strong>"No one gets hurt – That's the goal."</strong><br/>At ANDRITZ, excellence begins with Health and Safety. We protect everyone we impact — employees, contractors, and visitors.</div>
     <p>Safety is not separate from work — it is built into everything we do. Safety comes before short-term targets or pressure. We speak up, take action, and look out for each other.</p>
+    
     <h3>What this means for everyone on site:</h3>
     <ul>
       <li><strong>Leaders</strong> prioritize safety in every decision, even under pressure.</li>
       <li><strong>Supervisors</strong> set expectations, give guidance, and stop unsafe work.</li>
       <li><strong>Every person on site</strong> follows the rules and looks out for their team.</li>
     </ul>
-    <div class="alert alert-warn" style="margin-top:16px;"><strong>CEO Commitment:</strong> "A bad financial result can be recovered, but harm to someone's life cannot be undone."</div>
+    <div class="alert alert-warn" style="margin-top:20px;"><strong>CEO Commitment:</strong> "A bad financial result can be recovered, but harm to someone's life cannot be undone."</div>
   </div>
+
   <div class="card">
-    <h2><span class="icon">&#128203;</span>Quality Health, Safety, Environment &amp; Energy Policy Statement</h2>
-    <p>ANDRITZ QHSE &amp; Energy Policy – is unconditionally committed to compliance with all relevant legal requirements and applicable standards regarding health, safety, and environmental protection. Key commitments include:</p>
-    <ul style="margin-top:10px;">
+    <h2><span class="icon">&#128203;</span>QHSE &amp; Energy Policy Statement</h2>
+    <p>ANDRITZ is unconditionally committed to compliance with all relevant legal requirements and applicable standards regarding health, safety, and environmental protection.</p>
+    <ul>
       <li>ISO 9001 – Quality Management</li>
       <li>ISO 14001 – Environmental Management</li>
       <li>ISO 45001 – Occupational Health &amp; Safety</li>
       <li>ISO 50001 – Energy Management</li>
-      <li>&#9989; "Committed to No Harm" approach focused on preventing injuries and incidents.</li>
-      <li>&#9989; Implementation of 8 Life-Saving Rules, Behavior-Based Safety (BBS), and Leadership in Health &amp; Safety (LIHS).</li>
-      <li>&#9989; Continuous risk assessment, audits, inspections, and incident prevention.</li>
-      <li>&#9989; Reduction of environmental impact through emission control, waste management, and resource conservation.</li>
-      <li>&#9989; Efficient use of energy and continuous improvement in energy performance.</li>
     </ul>
   </div>
+
   <div class="btn-row">
     <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
-    <button class="btn btn-primary" data-goto="next">Next: Organisation Chart &#8594;</button>
+    <button class="btn btn-primary" data-goto="next">Next: Site Rules &#8594;</button>
   </div>
 </div>
 
-<!-- ── PAGE: 8 Life-Saving Rules ── -->
+<!-- ── PAGE 3: Site Rules & Organization ── -->
 <div class="section" id="sec-rules">
-     <div class="card">
-    <P>Organisation Chart @ Pare HEP</P>
-    <img
-    src="Site Organisation Chart.jpg"
-    alt="Organisation chart"
-    style="width:100%; max-width:800px; height:auto;" loading="lazy" decoding="async">
+  <div class="card">
+    <h2><span class="icon">&#128101;</span> Organisation & First Aid</h2>
+    <img src="Site Organisation Chart.jpg" alt="Organisation chart" class="site-photo site-photo--md" loading="lazy" decoding="async" onerror="this.style.display='none'">
+    <p><strong>First Aiders on Site:</strong></p>
+    <img src="List of First Aiders PAre.png" alt="List of First Aiders" class="site-photo site-photo--sm" loading="lazy" decoding="async" onerror="this.style.display='none'">
   </div>
   
   <div class="card">
-    <!-- <h2><span class="icon">&#128737;</span>The 8 Life-Saving Rules</h2>
-    <div class="alert alert-danger"><strong>&#9888;&#65039; Violation of any Life-Saving Rule is a serious safety breach and may result in immediate removal from site.</strong></div>
-    <div class="rules-grid">
-      <div class="rule-card"><div class="rule-num">Rule 1</div><div class="rule-title">&#128203; Permit to Work</div><p>Obtain a valid permit before starting any critical activity. Permits ensure risks are identified and managed.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 2</div><div class="rule-title">&#9889; Control Hazardous Energy</div><p>Isolate or control all hazardous energy sources (LOTO) before starting maintenance or commissioning work.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 3</div><div class="rule-title">&#129495; Work at Heights</div><p>Plan ahead. Ensure the area is safe, rescue plan is ready, and correct equipment is in place before working at altitude.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 4</div><div class="rule-title">&#127959; Lift Securely</div><p>Only trained persons assess loads. Restrict and isolate the lifting area and rig the load correctly before lifting.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 5</div><div class="rule-title">&#128295; Use Tools Correctly</div><p>Use tools and machines as intended. Inspect before use, maintain them well, and control the danger zone.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 6</div><div class="rule-title">&#129504; Be Ready for Action</div><p>Be physically and mentally fit. Never work under the influence of alcohol, drugs, or any impairing substance.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 7</div><div class="rule-title">&#128663; Drive Safely</div><p>Ensure all vehicles are in good condition. Drivers must follow all regulations. Only site vehicles enter the powerhouse.</p></div>
-      <div class="rule-card"><div class="rule-num">Rule 8</div><div class="rule-title">&#128682; Confined Spaces</div><p>Conduct atmospheric tests, have a qualified watchperson, prepare a rescue plan, and use correct equipment from the permit.</p></div>
-    </div> -->
-      <!-- <h2>Roles and Responsibilities</h2>
-      <h2>General Responsibilities</h2>
-
-<h3>Responsibilities of the Project Manager</h3>
-<ul>
-  <li>Responsible for the execution of the project and accountable for all HSE matters.</li>
-  <li>Provides the necessary resources to ensure HSE objectives are achieved.</li>
-  <li>Leads project coordination with customers, consulting engineers, and consortium partners.</li>
-  <li>Oversees implementation of the Health, Safety, and Environmental Management System at the project site.</li>
-</ul>
-
-<h3>Responsibilities of the Site Manager</h3>
-<ul>
-  <li>Has overall responsibility for all work carried out on site in accordance with contract requirements.</li>
-  <li>Ensures the Health, Safety, and Environmental Management System is effectively implemented.</li>
-  <li>Maintains and updates the Health, Safety, and Environmental Plan as work progresses.</li>
-  <li>Ensures arrangements for site security, emergency preparedness, and safety coordination are in place.</li>
-  <li>Monitors health, safety, and environmental protection measures regularly.</li>
-</ul>
-
-<h3>Responsibilities of Supervisors and Contractors</h3>
-<ul>
-  <li>Identify workplace risks and implement appropriate control measures.</li>
-  <li>Ensure work is carried out safely and in accordance with instructions.</li>
-  <li>Maintain equipment and materials in safe working condition.</li>
-  <li>Conduct toolbox talks and safety briefings when required.</li>
-  <li>Report accidents, incidents, unsafe conditions, and equipment defects.</li>
-  <li>Participate in health, safety, and environmental meetings and activities.</li>
-  <li>Comply with all additional safety requirements communicated by site management.</li>
-</ul>
-
-<h3>Responsibilities of All Personnel on Site</h3>
-<ul>
-  <li>Comply with health, safety, and environmental requirements.</li>
-  <li>Use personal protective equipment (PPE) as provided and instructed.</li>
-  <li>Report hazards, deficiencies, incidents, and accidents immediately.</li>
-  <li>Take responsibility for personal safety and the safety of others.</li>
-</ul>
-
-<h3>Responsibilities of the HSE Advisor</h3>
-<ul>
-  <li>Assist in the implementation and updating of the HSE Plan.</li>
-  <li>Support risk assessments and development of control measures.</li>
-  <li>Conduct and record regular safety inspections and audits.</li>
-  <li>Investigate and document accidents and incidents.</li>
-  <li>Coordinate health, safety, and environmental aspects of site activities.</li>
-  <li>Organize induction programs and site-specific HSE training.</li>
-</ul> -->
-<h2>General Safety Rules</h2>
-<TABLE>
-<tr><td><ul>
-    <li>No drugs, alcohol, or unauthorized smoking.</li>
-    <li>Stop work immediately if it is unsafe.</li>
-    <li>Work only if trained, competent, and authorized.</li>
-    <li>Follow all site safety and environmental rules.</li>
-    <li>If unsure, stop and ask your supervisor.</li>
-</ul></td>
-<td><p>List of First Aiders</p><br><img
-    src="List of First Aiders PAre.png"
-    alt="Organisation chart"
-    style="width:100%; max-width:50%; height:auto;" loading="lazy" decoding="async">
-</TABLE></td></tr>
-<p><strong>Remember:</strong> Safety is everyone's responsibility. Always work safely, follow procedures, and report unsafe conditions immediately.</p>
+    <h2><span class="icon">&#9888;&#65039;</span> General Safety Rules</h2>
+    <ul>
+      <li>No drugs, alcohol, or unauthorized smoking.</li>
+      <li>Stop work immediately if it is unsafe.</li>
+      <li>Work only if trained, competent, and authorized.</li>
+      <li>Follow all site safety and environmental rules.</li>
+      <li>If unsure, stop and ask your supervisor.</li>
+    </ul>
+    <div class="alert alert-danger" style="margin-top: 16px;">
+      <strong>Remember:</strong> Safety is everyone's responsibility. Always work safely, follow procedures, and report unsafe conditions immediately.
+    </div>
   </div>
+
   <div class="btn-row">
     <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
     <button class="btn btn-primary" data-goto="next">Next: Visitor Instructions &#8594;</button>
   </div>
 </div>
 
-<!-- ── PAGE: Visitor Instructions + PPE ── -->
+<!-- ── PAGE 4: Visitor Instructions + PPE ── -->
 <div class="section" id="sec-instructions">
-  <img class="site-photo site-photo--md" src="Site Hazards.png" alt="Hazards at Hydro Power Station" loading="lazy" decoding="async"/>
-
   <div class="card">
     <h2><span class="icon">&#128204;</span>Visitor Instructions</h2>
+    
+    <!-- Primary Instruction Tabs -->
     <div class="tabs">
       <button class="tab-btn active" data-tab="emergency">Emergency</button>
-      
       <button class="tab-btn" data-tab="dos">Do's and Don'ts</button>
-      <button class="tab-btn" data-tab="mandatory">Mandatory</button>
+      <button class="tab-btn" data-tab="floors">Floor Plans</button>
+      <button class="tab-btn" data-tab="mandatory">Mandatory Checks</button>
     </div>
-<div class="tabs">
-    <div class="tab-btn" data-tab="MIV-Floor">MIV Floor</div>
-    <div class="tab-btn" data-tab="Turbine-floor">Turbine Floor</div>
-    <div class="tab-btn" data-tab="Generator-floor">Generator Floor</div>
-    <div class="tab-btn" data-tab="Service-bay">Service Bay</div>
-    </div> 
+
+    <!-- Emergency Tab -->
     <div class="tab-pane active" id="emergency">
-      <div class="alert alert-danger" style="margin-bottom:12px;">
+      <div class="alert alert-danger">
         <strong>If you hear an emergency hooter or siren:</strong><br/>
         Follow the safety exit signs &#8594; reach the emergency assembly point &#8594; stay calm, do not panic &#8594; wait for further instruction.
       </div>
       <div class="emg-grid">
         <div class="emg-card"><div class="emg-icon">&#128657;</div><div class="emg-label">Admin</div><div class="emg-num">Koushik Das</div></div>
-        <div class="emg-card"><div class="emg-icon">&#128658;</div><div class="emg-label">Site Manager</div><div class="emg-num">Shantanu  Mukharjee</div></div>
-        <div class="emg-card"><div class="emg-icon">&#128222;</div><div class="emg-label">Internal</div><div class="emg-num">HSE: Mr. Ankit Verma<a href="tel:+91-7976544885">Call Ankit Now (797654485)</a></div></div>
-      </div>
-      <h3 style="margin-top:16px;">Types of Emergency on Site</h3>
-      <ul style="margin-top:8px;">
-        <li>Personal (medical emergency, accidents)</li>
-        <li>Fire (domestic or industrial)</li>
-        <li>Biological (epidemics, food poisoning)</li>
-        <li>Disaster (earthquakes, floods, landslides, cyclones)</li>
-      </ul>
-      <p style="margin-top:14px;"><strong>Emergency Escape Routes in HEP</strong></p>
-      <img class="site-photo site-photo--fixed-h" src="Upstream view Landscape.jpg" alt="Upstream view landscape" loading="lazy" decoding="async"/>
-
-    
-    
-      <!-- <div class="emg-grid">
-        <img class="site-photo site-photo--fixed-h" src="Upstream view Landscape.jpg" alt="Upstream view landscape" loading="lazy" decoding="async"/>
-        <img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV floor" loading="lazy" decoding="async"/>
-        <img class="site-photo site-photo--xs" src="Turbine Floor Top View.jpg" alt="Turbine floor top view" loading="lazy" decoding="async"/>
-        <img class="site-photo site-photo--xs" src="Generator Floor.jpg" alt="Generator floor" loading="lazy" decoding="async"/>
-        <img class="site-photo site-photo--xs" src="Service Bay.jpg" alt="Service bay" loading="lazy" decoding="async"/>
-      </div>-->
-    </div>
-<div class="tab-pane" id="MIV-Floor"><img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV floor" ;style="width:100%; max-width:autopx; height:100px"; loading="lazy" decoding="async"/>
-</div>
-<div class="tab-pane" id="Turbine-floor"><img class="site-photo site-photo--xs" src="Turbine Floor Top View.jpg" alt="Turbine floor top view" loading="lazy" decoding="async"/>
-</div>
-<div class="tab-pane" id="Generator-floor"><img class="site-photo site-photo--xs" src="Generator Floor.jpg" alt="Generator floor" loading="lazy" decoding="async"/>
+        <div class="emg-card"><div class="emg-icon">&#128658;</div><div class="emg-label">Site Manager</div><div class="emg-num">Shantanu Mukharjee</div></div>
+        <div class="emg-card">
+          <div class="emg-icon">&#128222;</div>
+          <div class="emg-label">HSE Contact</div>
+          <div class="emg-num"><a href="tel:+917976544885">Ankit Verma</a></div>
         </div>
-<div class="tab-pane" id="Service-bay"><img class="site-photo site-photo--xs" src="Service Bay.jpg" alt="Service bay" loading="lazy" decoding="async"/>
       </div>
-
-
-    <div class="tab-pane" id="dos">
-
-
-<strong>Mandatory</strong>
-<ul>
-    <li>Safety Helmet, Safety Shoes, and Reflective Jacket are mandatory while on site.</li>
-    <li>COVID safety measures shall be followed at all times.</li>
-    <li>Only authorized site vehicles are permitted to enter the powerhouse.</li>
-    <li>Entry without a valid ID card is strictly prohibited.</li>
-    <li>Visitors must be accompanied by the concerned authorized person at all times.</li>
-    <li>By signing this document, you agree to comply with all site safety rules and instructions.</li>
-</ul>
-
-<strong>Do's</strong>
-<ul>
-    <li>If you are a Doctor or First Aider, please inform the Site Manager/HSE Advisor. Your assistance may be required during emergencies.</li>
-    <li>Follow all safety instructions and warning signs displayed in the work areas.</li>
-    <li>Use appropriate PPE as required for the area being visited.</li>
-    <li>Watch your step and avoid tripping over materials, tools, or other objects.</li>
-    <li>Remain alert and be aware of your surroundings at all times.</li>
-    <li>If you hear an emergency hooter or siren, follow the designated emergency exit signs and proceed to the assembly point. Stay calm, do not panic, and wait for further instructions.</li>
-    <li>If you observe any near miss, accident, incident, unsafe act, or unsafe condition, report it immediately to the HSE Advisor or Site Manager.</li>
-</ul>
-
-<strong>Don'ts</strong>
-<ul>
-    <li>Do not enter the powerhouse unless authorized by Security.</li>
-    <li>Do not enter excavations, confined spaces (such as pipes, inlets, or manholes), or approach hazardous materials without proper authorization and training.</li>
-    <li>Do not enter any unauthorized or restricted area.</li>
-    <li>Do not touch or operate any equipment, materials, or chemicals unless authorized to do so.</li>
-    <li>Do not carry cameras, laptops, storage devices, CDs, or other recording/media devices into the powerhouse without prior permission.</li>
-    <li>Smoking is prohibited within the site premises except in designated smoking areas.</li>
-    <li>Consumption of tobacco, gutka, or similar products is prohibited within the site premises.</li>
-    <li>Never touch any component, material, or chemical that may present hot surface, sharp edge, or chemical exposure hazards.</li>
-    <li>Do not work or stand near civil construction activities or excavated areas. Maintain a safe distance from construction equipment and moving vehicles.</li>
-</ul>
     </div>
 
+    <!-- Do's and Don'ts Tab -->
+    <div class="tab-pane" id="dos">
+      <h3>&#9989; Do's</h3>
+      <ul>
+        <li>If you are a Doctor or First Aider, please inform the Site Manager/HSE Advisor.</li>
+        <li>Follow all safety instructions and warning signs displayed in the work areas.</li>
+        <li>Use appropriate PPE as required for the area being visited.</li>
+        <li>Watch your step and avoid tripping over materials, tools, or other objects.</li>
+      </ul>
+
+      <h3>&#10060; Don'ts</h3>
+      <ul>
+        <li>Do not enter the powerhouse unless authorized by Security.</li>
+        <li>Do not enter excavations, confined spaces, or approach hazardous materials.</li>
+        <li>Do not touch or operate any equipment, materials, or chemicals.</li>
+        <li>Do not carry cameras or recording devices without prior permission.</li>
+        <li>Smoking and consumption of tobacco/gutka is strictly prohibited.</li>
+      </ul>
+    </div>
+
+    <!-- Floor Plans Tab -->
+    <div class="tab-pane" id="floors">
+      <h3>Powerhouse Layouts</h3>
+      <p>Familiarize yourself with these restricted areas:</p>
+      <div class="emg-grid">
+        <div class="emg-card"><strong>MIV Floor</strong><img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV Floor" loading="lazy" onerror="this.style.display='none'"/></div>
+        <div class="emg-card"><strong>Turbine Floor</strong><img class="site-photo site-photo--xs" src="Turbine Floor Top View.jpg" alt="Turbine Floor" loading="lazy" onerror="this.style.display='none'"/></div>
+        <div class="emg-card"><strong>Generator Floor</strong><img class="site-photo site-photo--xs" src="Generator Floor.jpg" alt="Generator Floor" loading="lazy" onerror="this.style.display='none'"/></div>
+        <div class="emg-card"><strong>Service Bay</strong><img class="site-photo site-photo--xs" src="Service Bay.jpg" alt="Service Bay" loading="lazy" onerror="this.style.display='none'"/></div>
+      </div>
+    </div>
+
+    <!-- Mandatory Checks Tab -->
     <div class="tab-pane" id="mandatory">
+      <h3>Mandatory Requirements</h3>
       <ul class="checklist" id="mandatory-checks">
         <li><label><input type="checkbox" data-mandatory-check/><span>Safety Helmet, Safety Shoes, and Reflective Jacket are worn at all times on site.</span></label></li>
         <li><label><input type="checkbox" data-mandatory-check/><span>Only site vehicles are allowed to enter inside the powerhouse.</span></label></li>
-        <li><label><input type="checkbox" data-mandatory-check/><span>You must be accompanied by a concerned person at all times.</span></label></li>
-        <li><label><input type="checkbox" data-mandatory-check/><span>I consent to follow all safety rules &amp; instructions by signing this induction document.</span></label></li>
-        <li><label><input type="checkbox" data-mandatory-check/><span>Blood Group must be provided during induction.</span></label></li>
+        <li><label><input type="checkbox" data-mandatory-check/><span>You must be accompanied by an authorized escort at all times.</span></label></li>
+        <li><label><input type="checkbox" data-mandatory-check/><span>Blood Group must be provided during induction registration.</span></label></li>
+        <li><label><input type="checkbox" data-mandatory-check/><span>I consent to follow all safety rules &amp; instructions.</span></label></li>
       </ul>
-      <p id="mandatory-status" style="margin-top:12px;font-size:13px;color:var(--gray);">Please tick all items above to proceed.</p>
-    </div>
-  </div>
-  <div class="tab-pane" id="MIV Floor"><img class="site-photo site-photo--xs" src="MIV FLOOR.jpg" alt="MIV floor" loading="lazy" decoding="async"/></div>
-
-  <div class="card">
-    <p><strong>Site Facilities</strong></p>
-    <div class="emg-grid">
-      <div class="emg-card">
-        <img class="site-photo site-photo--sm" src="Site Facilities.png" alt="Site facilities" loading="lazy" decoding="async"/>
-      </div>
-      <div class="emg-card">
-        <img class="site-photo site-photo--sm" src="Fire tendor.png" alt="Fire tender" loading="lazy" decoding="async"/>
-        <p>Fire Tender</p>
-      </div>
-      <div class="emg-card">
-        <img class="site-photo site-photo--fixed-h-sm" src="Recreational Centre.png" alt="Recreational centre" loading="lazy" decoding="async"/>
-        <p>Recreational Centre</p>
-      </div>
+      <p id="mandatory-status" style="margin-top:12px;font-size:14px;font-weight:600;color:var(--danger);">Please tick all items above to unlock the next step.</p>
     </div>
   </div>
 
@@ -567,11 +382,11 @@
   </div>
 </div>
 
-<!-- ── PAGE: Quiz ── -->
+<!-- ── PAGE 5: Quiz ── -->
 <div class="section" id="sec-quiz">
   <div class="card">
     <h2><span class="icon">&#128221;</span>Quick Knowledge Check</h2>
-    <p style="margin-bottom:20px;font-size:14px;">Answer all questions correctly to proceed. You may retry if needed.</p>
+    <p style="margin-bottom:24px; color:var(--gray);">Answer all questions correctly to proceed. You may retry if needed.</p>
 
     <div class="quiz-q" id="q1">
       <p>1. Which PPE items are mandatory before entering the site?</p>
@@ -582,6 +397,7 @@
       </div>
       <div class="quiz-feedback" id="qf1"></div>
     </div>
+    
     <div class="quiz-q" id="q2">
       <p>2. What should you do when you hear an emergency siren?</p>
       <div class="quiz-opt">
@@ -591,6 +407,7 @@
       </div>
       <div class="quiz-feedback" id="qf2"></div>
     </div>
+    
     <div class="quiz-q" id="q3">
       <p>3. Who is responsible for your safety on site?</p>
       <div class="quiz-opt">
@@ -600,146 +417,134 @@
       </div>
       <div class="quiz-feedback" id="qf3"></div>
     </div>
-    <div class="quiz-q" id="q4">
-      <p>4. Can you enter a confined space without a permit?</p>
-      <div class="quiz-opt">
-        <label><input type="radio" name="q4" value="a"/> Yes, if the area looks safe</label>
-        <label><input type="radio" name="q4" value="b"/> No — a Permit to Work, atmospheric tests, and a watchperson are always required</label>
-        <label><input type="radio" name="q4" value="c"/> Only if accompanied by a colleague</label>
-      </div>
-      <div class="quiz-feedback" id="qf4"></div>
-    </div>
 
-    <div style="margin-top:20px;">
+    <div style="margin-top:24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
       <button class="btn btn-primary" id="btn-quiz-check">Check Answers</button>
-      <span id="quiz-result" style="margin-left:16px;font-size:14px;font-weight:700;"></span>
+      <span id="quiz-result" style="font-size:15px; font-weight:700;"></span>
     </div>
   </div>
+
   <div class="btn-row">
     <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
     <button class="btn btn-primary" id="btn-quiz-next" disabled data-goto="next">Next: Register Entry &#8594;</button>
   </div>
 </div>
 
-<!-- ── PAGE: Visitor Registration Form ── -->
+<!-- ── PAGE 6: Visitor Registration Form ── -->
 <div class="section" id="sec-register">
   <div class="card">
     <h2><span class="icon">&#128203;</span>Visitor Entry Registration</h2>
-    <p style="font-size:13.5px;margin-bottom:20px;color:var(--gray);">All fields marked <span style="color:var(--danger);">*</span> are required.</p>
+    <p style="font-size:14px; margin-bottom:24px; color:var(--gray);">All fields marked <span style="color:var(--danger);font-weight:bold;">*</span> are required.</p>
 
-    <div class="form-row">
+    <!-- Wrapped in a standard HTML form for robust validation -->
+    <form id="visitor-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="e.g. Ramesh Kumar" required/>
+        </div>
+        <div class="form-group">
+          <label for="f-org">Organisation / Company <span class="req">*</span></label>
+          <input type="text" id="f-org" placeholder="e.g. NEEPCO" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-mobile">Mobile Number <span class="req">*</span></label>
+          <input type="tel" id="f-mobile" placeholder="+91 XXXXX XXXXX" required/>
+        </div>
+        <div class="form-group">
+          <label for="f-purpose">Purpose of Visit <span class="req">*</span></label>
+          <select id="f-purpose" required>
+            <option value="">— Select —</option>
+            <option>Official Inspection</option>
+            <option>Client Visit (NEEPCO)</option>
+            <option>Vendor / Supplier</option>
+            <option>Contractor Meeting</option>
+            <option>Government / Regulatory</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-area">Area to be Visited <span class="req">*</span></label>
+          <select id="f-area" required>
+            <option value="">— Select —</option>
+            <option value="SwitchYard">SwitchYard</option>
+            <option value="Control Room">Control Room</option>
+            <option value="Turbine Floor">Turbine Floor</option>
+            <option value="MIV Floor">MIV Floor</option>
+            <option value="Generator Floor">Generator Floor</option>
+            <option value="Dam">Dam</option>
+            <option value="Office / Colony">Office / Colony</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-host">Hosted By (Site Contact Name) <span class="req">*</span></label>
+          <input type="text" id="f-host" placeholder="Name of person receiving you" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-date">Date of Visit <span class="req">*</span></label>
+          <input type="date" id="f-date" required/>
+        </div>
+        <div class="form-group">
+          <label for="f-timein">Expected Time In <span class="req">*</span></label>
+          <input type="time" id="f-timein" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="f-idtype">ID Proof Type <span class="req">*</span></label>
+          <select id="f-idtype" required>
+            <option value="">— Select —</option>
+            <option value="Aadhaar Card">Aadhaar Card</option>
+            <option value="Passport">Passport</option>
+            <option value="Driving Licence">Driving Licence</option>
+            <option value="Company ID">Company ID</option>
+            <option value="Government ID">Government ID</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="f-idnum">ID Proof Number <span class="req">*</span></label>
+          <input type="text" id="f-idnum" placeholder="Enter ID number" required/>
+        </div>
+      </div>
+
       <div class="form-group">
-        <label for="f-name">Full Name <span class="req">*</span></label>
-        <input type="text" id="f-name" placeholder="e.g. Ramesh Kumar" required/>
+        <label for="f-bp">Blood Group <span class="req">*</span></label>
+        <input type="text" id="f-bp" placeholder="e.g. B+" required/>
       </div>
-      <div class="form-group">
-        <label for="f-org">Organisation / Company <span class="req">*</span></label>
-        <input type="text" id="f-org" placeholder="e.g. NEEPCO" required/>
+
+      <div class="consent-box">
+        <p>By checking below, I confirm that I have completed the Safety Induction for PARE HEP 2&#xD7;55 MW site and agree to:</p>
+        <ul style="margin: 10px 0 0 16px; font-size:14px; line-height:1.6; color:#34495E;">
+          <li>Wear the mandatory PPE (Helmet, Shoes, Reflective Jacket) at all times.</li>
+          <li>Follow all instructions from site management, supervisors, and HSE Advisor.</li>
+          <li>Report any unsafe conditions, near-misses, or incidents immediately.</li>
+          <li>Not enter any restricted area without an authorized escort.</li>
+        </ul>
+        <div class="consent-check">
+          <input type="checkbox" id="consent-cb" required/>
+          <label for="consent-cb">I have read, understood, and agree to comply with all safety rules and visitor instructions.</label>
+        </div>
       </div>
-    </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label for="f-mobile">Mobile Number <span class="req">*</span></label>
-        <input type="tel" id="f-mobile" placeholder="+91 XXXXX XXXXX" required/>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
+        <button type="submit" class="btn btn-success" id="btn-submit" disabled>&#10004; Submit &amp; Complete</button>
       </div>
-      <div class="form-group">
-        <label for="f-purpose">Purpose of Visit <span class="req">*</span></label>
-        <select id="f-purpose" required>
-          <option value="">— Select —</option>
-          <option>Official Inspection</option>
-          <option>Client Visit (NEEPCO)</option>
-          <option>Vendor / Supplier</option>
-          <option>Contractor Meeting</option>
-          <option>Government / Regulatory</option>
-          <option>Media / Press</option>
-          <option>Other</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="f-area">Area to be Visited <span class="req">*</span></label>
-        <!-- Values must exactly match the Google Form's option strings -->
-        <select id="f-area" required>
-          <option value="">— Select —</option>
-          <option value="SwitchYard">SwitchYard</option>
-          <option value="Control Room">Control Room</option>
-          <option value="Office">Office</option>
-          <option value="Turbine Floor">Turbine Floor</option>
-          <option value="MIV Floor">MIV Floor</option>
-          <option value="Generator Floor">Generator Floor</option>
-          <option value="AHU">AHU</option>
-          <option value="Diesel Generator">Diesel Generator</option>
-          <option value="Dam">Dam</option>
-          <option value="Colony">Colony</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="f-host">Hosted By (Site Contact Name) <span class="req">*</span></label>
-        <input type="text" id="f-host" placeholder="Name of ANDRITZ/NEEPCO person receiving you" required/>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="f-date">Date of Visit <span class="req">*</span></label>
-      <input type="date" id="f-date" required/>
-    </div>
-
-    <div class="form-group">
-      <label for="f-timein">Expected Time In <span class="req">*</span></label>
-      <input type="time" id="f-timein" required/>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="f-idtype">ID Proof Type <span class="req">*</span></label>
-        <select id="f-idtype" required>
-          <option value="">— Select —</option>
-          <option value="Aadhaar Card">Aadhaar Card</option>
-          <option value="Passport">Passport</option>
-          <option value="Driving Licence">Driving Licence</option>
-          <option value="Company ID">Company ID</option>
-          <option value="Government ID">Government ID</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="f-idnum">ID Proof Number <span class="req">*</span></label>
-        <input type="text" id="f-idnum" placeholder="Enter ID number" required/>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="f-bp">Blood Group <span class="req">*</span></label>
-      <input type="text" id="f-bp" placeholder="e.g. B+" required/>
-    </div>
-
-    <div class="consent-box">
-      <p>By checking below, I confirm that I have completed the Safety Induction for PARE HEP 2&#xD7;55 MW site and agree to:</p>
-      <ul style="margin: 10px 0 0 16px; font-size:13px; line-height:1.7; color:#444;">
-        <li>Wear the mandatory PPE (Safety Helmet, Safety Shoes, Reflective Jacket) at all times.</li>
-        <li>Follow all instructions from site management, supervisors, and HSE Advisor.</li>
-        <li>Report any unsafe conditions, near-misses, or incidents immediately.</li>
-        <li>Evacuate calmly to the assembly point when alerted by emergency siren.</li>
-        <li>Not enter any restricted area without an authorized escort.</li>
-      </ul>
-      <div class="consent-check">
-        <input type="checkbox" id="consent-cb"/>
-        <label for="consent-cb">I have read, understood, and agree to comply with all safety rules and visitor instructions during my visit to PARE HEP site.</label>
-      </div>
-    </div>
-
-    <div id="form-error" class="alert alert-danger" style="display:none;margin-top:12px;"></div>
-
-    <div class="btn-row">
-      <button class="btn btn-secondary" data-goto="prev">&#8592; Back</button>
-      <button class="btn btn-success" id="btn-submit" disabled>&#10004; Submit &amp; Complete Induction</button>
-    </div>
+    </form>
   </div>
 </div>
 
-<!-- ── PAGE: Success ── -->
+<!-- ── PAGE 7: Success ── -->
 <div class="section" id="sec-success">
   <div class="card">
     <div class="success-screen">
@@ -747,93 +552,102 @@
       <h2>Induction Complete!</h2>
       <p>You have successfully completed the PARE HEP Visitor Safety Induction.<br/>Your entry has been submitted to the site log.</p>
       <div class="pass-id" id="pass-id">VIS-000001</div>
-      <p style="font-size:13px;">Please show this Pass ID at the site gate.<br/>Keep this page open or take a screenshot.</p>
-      <div class="alert alert-warn" style="text-align:left; margin-top:24px;">
+      <p style="font-size:15px; font-weight: 600; color: var(--navy);">Please show this Pass ID at the site gate.<br/>Keep this page open or take a screenshot.</p>
+      
+      <div class="alert alert-warn" style="text-align:left; margin-top:32px;">
         <strong>Remember before entering:</strong><br/>
         &#9937;&#65039; Helmet &nbsp;|&nbsp; &#128095; Safety Shoes &nbsp;|&nbsp; &#129510; Reflective Jacket<br/>
         Stay with your host at all times. Report any unsafe conditions to the HSE Advisor.
       </div>
-      <div class="alert alert-safe" style="text-align:left;margin-top:16px;">
-        <strong>&#128202; Entry recorded in site visitor log.</strong><br/>
-        Your details have been submitted via the Google Form to the HSE team.
-      </div>
-      <div>
-        <img class="site-photo site-photo--sm" style="margin:0 auto;" src="image3.jpg" alt="PPE Display" loading="lazy" decoding="async"/>
-        <button class="btn btn-primary" style="margin-top:20px;" id="btn-print">&#128438; Print / Save Pass</button>
-      </div>
+      
+      <button class="btn btn-primary" style="margin-top:20px;" id="btn-print">&#128438; Print / Save Pass</button>
     </div>
   </div>
 </div>
 
-<!-- Hidden iframe — Google Forms POST target (prevents page redirect) -->
+<!-- Hidden iframe for Google Forms submission -->
 <iframe id="hidden_iframe" name="hidden_iframe" style="display:none;" title="form submission target"></iframe>
 
 <script>
 (function () {
   'use strict';
 
-  const QUIZ_ANSWERS = { q1: 'b', q2: 'c', q3: 'c', q4: 'b' };
-  const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSezJ6f_pB3bPPvcZL1w_t-cwKQ6qXnn4BLaxQONdD_hBX0MKA/formResponse';
-
+  // Quick Selectors
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
   const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+
+  // Configuration
+  const QUIZ_ANSWERS = { q1: 'b', q2: 'c', q3: 'c' };
+  const GOOGLE_FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSezJ6f_pB3bPPvcZL1w_t-cwKQ6qXnn4BLaxQONdD_hBX0MKA/formResponse';
 
   const progressFill = $('#pfill');
   const stepLabel = $('#step-label');
   const submitOverlay = $('#submit-overlay');
-
-  // ─────────────────────────────────────────────────────────────────────
-  // Step engine: the list of steps is simply every ".section" element,
-  // read in DOM order. Add/remove/reorder pages by editing the HTML only —
-  // this list (and therefore the progress bar / step count) updates itself.
-  // ─────────────────────────────────────────────────────────────────────
+  const visitorForm = $('#visitor-form');
+  
   const sections = $$('.section');
   let currentIndex = Math.max(0, sections.findIndex((s) => s.classList.contains('active')));
 
+  // 1. Navigation Logic
   function showStep(index) {
     sections.forEach((s) => s.classList.remove('active'));
     sections[index].classList.add('active');
-    progressFill.style.width = `${(index / (sections.length - 1)) * 100}%`;
+    // Calculate progress (last step is success screen, so divide by length - 2 for visual accuracy)
+    let progress = (index / (sections.length - 1)) * 100;
+    progressFill.style.width = `${progress}%`;
     stepLabel.textContent = `Step ${index + 1} / ${sections.length}`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // target: "next", "prev", or a specific section id (e.g. "sec-success")
   function goTo(target) {
     let index;
     if (target === 'next') index = currentIndex + 1;
     else if (target === 'prev') index = currentIndex - 1;
     else index = sections.findIndex((s) => s.id === target);
 
-    if (index < 0 || index >= sections.length) return;
-    currentIndex = index;
-    showStep(currentIndex);
+    if (index >= 0 && index < sections.length) {
+      currentIndex = index;
+      showStep(currentIndex);
+    }
   }
 
+  // 2. Tab Navigation
   function switchTab(button, targetId) {
-    $$('.tab-btn').forEach((b) => b.classList.remove('active'));
-    $$('.tab-pane').forEach((p) => p.classList.remove('active'));
+    const tabGroup = button.closest('.tabs');
+    const tabContainer = tabGroup.parentElement;
+    
+    tabGroup.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+    tabContainer.querySelectorAll('.tab-pane').forEach((p) => p.classList.remove('active'));
+    
     button.classList.add('active');
     $(`#${targetId}`).classList.add('active');
   }
 
+  // 3. Mandatory Checklist Logic
   function updateMandatoryStatus() {
     const boxes = $$('[data-mandatory-check]');
     const allChecked = boxes.every((b) => b.checked);
     const status = $('#mandatory-status');
-    status.textContent = allChecked
-      ? 'All mandatory requirements acknowledged.'
-      : 'Please tick all items above to proceed.';
-    status.style.color = allChecked ? 'var(--safe)' : 'var(--gray)';
-    $('#btn-mandatory-next').disabled = !allChecked;
+    
+    if (allChecked) {
+      status.textContent = 'All mandatory requirements acknowledged.';
+      status.style.color = 'var(--safe)';
+      $('#btn-mandatory-next').disabled = false;
+    } else {
+      status.textContent = 'Please tick all items above to proceed.';
+      status.style.color = 'var(--danger)';
+      $('#btn-mandatory-next').disabled = true;
+    }
   }
 
+  // 4. Quiz Logic
   function checkQuiz() {
     let score = 0;
     Object.keys(QUIZ_ANSWERS).forEach((q) => {
       const selected = $(`input[name="${q}"]:checked`);
       const feedback = $(`#qf${q.slice(1)}`);
       feedback.style.display = 'block';
+      
       if (!selected) {
         feedback.className = 'quiz-feedback wrong';
         feedback.textContent = 'Please select an answer.';
@@ -843,23 +657,22 @@
         score++;
       } else {
         feedback.className = 'quiz-feedback wrong';
-        feedback.textContent = 'Incorrect. Please review the induction and try again.';
+        feedback.textContent = 'Incorrect. Please review the material and try again.';
       }
     });
 
     const result = $('#quiz-result');
     const allCorrect = score === Object.keys(QUIZ_ANSWERS).length;
+    
     result.style.color = allCorrect ? 'var(--safe)' : 'var(--danger)';
     result.textContent = allCorrect
       ? 'All correct! You may proceed.'
-      : `${score}/${Object.keys(QUIZ_ANSWERS).length} correct. Please review and retry.`;
+      : `${score}/${Object.keys(QUIZ_ANSWERS).length} correct. Review and retry.`;
+    
     $('#btn-quiz-next').disabled = !allCorrect;
   }
 
-  function generatePassId() {
-    return `VIS-${Date.now().toString().slice(-6)}`;
-  }
-
+  // 5. Form Submission via Hidden Iframe
   function postToGoogleForm(fields) {
     const form = document.createElement('form');
     form.method = 'POST';
@@ -880,28 +693,23 @@
     form.remove();
   }
 
-  function submitForm() {
-    const requiredIds = [
-      'f-name', 'f-org', 'f-mobile', 'f-purpose', 'f-area', 'f-date',
-      'f-timein', 'f-host', 'f-idtype', 'f-idnum', 'f-bp',
-    ];
-    const missing = requiredIds.filter((id) => !$(`#${id}`).value.trim());
-    const errorBox = $('#form-error');
-
-    if (missing.length) {
-      errorBox.style.display = 'block';
-      errorBox.textContent = 'Please fill all required fields before submitting.';
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    // Utilize native HTML5 form validation UX
+    if (!visitorForm.checkValidity()) {
+      visitorForm.reportValidity();
       return;
     }
-    errorBox.style.display = 'none';
 
-    const passId = generatePassId();
+    const passId = `VIS-${Date.now().toString().slice(-6)}`;
     $('#pass-id').textContent = passId;
     submitOverlay.classList.add('show');
 
     const [dateYear, dateMonth, dateDay] = $('#f-date').value.split('-');
     const [timeHour, timeMinute] = $('#f-timein').value.split(':');
 
+    // Post to Google Form mapping
     postToGoogleForm({
       'entry.2017134743': $('#f-name').value,
       'entry.338794571': $('#f-org').value,
@@ -923,42 +731,52 @@
     setTimeout(() => {
       submitOverlay.classList.remove('show');
       goTo('sec-success');
-    }, 2500);
+    }, 2000);
   }
 
+  // 6. Event Listeners
   document.addEventListener('DOMContentLoaded', () => {
-    // Set the initial progress bar / step label correctly on load
     showStep(currentIndex);
 
     // Pre-fill today's date
     $('#f-date').value = new Date().toISOString().split('T')[0];
 
-    // Step navigation (Back / Next buttons) — works for "prev", "next",
-    // or a direct section id, wherever that button happens to live in the DOM.
+    // Navigation buttons
     $$('[data-goto]').forEach((btn) => {
-      btn.addEventListener('click', () => goTo(btn.dataset.goto));
+      btn.addEventListener('click', (e) => {
+        if(btn.type !== 'submit') e.preventDefault();
+        if(btn.id !== 'btn-submit') goTo(btn.dataset.goto);
+      });
     });
 
-    // Instruction tabs
+    // Tabs
     $$('[data-tab]').forEach((btn) => {
-      btn.addEventListener('click', () => switchTab(btn, btn.dataset.tab));
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchTab(btn, btn.dataset.tab);
+      });
     });
 
-    // Mandatory checklist
+    // Mandatory Checklist
     $$('[data-mandatory-check]').forEach((box) => {
       box.addEventListener('change', updateMandatoryStatus);
     });
 
-    // Quiz
-    $('#btn-quiz-check').addEventListener('click', checkQuiz);
+    // Quiz Button
+    $('#btn-quiz-check').addEventListener('click', (e) => {
+      e.preventDefault();
+      checkQuiz();
+    });
 
-    // Registration form
+    // Consent Checkbox Toggle
     $('#consent-cb').addEventListener('change', (e) => {
       $('#btn-submit').disabled = !e.target.checked;
     });
-    $('#btn-submit').addEventListener('click', submitForm);
 
-    // Success screen
+    // Form Submission
+    visitorForm.addEventListener('submit', handleFormSubmit);
+
+    // Print Pass
     $('#btn-print').addEventListener('click', () => window.print());
   });
 })();
