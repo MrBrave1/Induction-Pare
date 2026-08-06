@@ -112,6 +112,16 @@
   .checklist label { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; font-size: 14.5px; cursor: pointer; font-weight: 500; color: var(--navy); }
   .checklist input[type="checkbox"] { margin-top: 3px; accent-color: var(--blue); transform: scale(1.3); flex-shrink: 0; cursor: pointer; }
 
+  /* Form Types Toggle */
+  .visitor-type-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .radio-card { position: relative; cursor: pointer; }
+  .radio-card input { position: absolute; opacity: 0; }
+  .rc-content { display: flex; flex-direction: column; padding: 16px; border: 2px solid var(--border); border-radius: 10px; background: white; transition: all 0.2s; }
+  .rc-content strong { font-size: 15px; color: var(--navy); margin-bottom: 4px; }
+  .rc-content span { font-size: 13px; color: var(--gray); line-height: 1.4; }
+  .radio-card input:checked + .rc-content { border-color: var(--blue); background: var(--light); box-shadow: 0 4px 12px rgba(13,59,110,0.1); }
+  @media (max-width: 500px) { .visitor-type-toggle { grid-template-columns: 1fr; gap: 12px; } }
+
   /* Forms */
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
@@ -433,95 +443,127 @@
 <!-- ── PAGE 6: Visitor Registration Form ── -->
 <div class="section" id="sec-register">
   <div class="card">
-    <h2><span class="icon">&#128203;</span>Visitor Entry Registration</h2>
-    <p style="font-size:14px; margin-bottom:24px; color:var(--gray);">All fields marked <span style="color:var(--danger);font-weight:bold;">*</span> are required.</p>
-
-    <!-- Wrapped in a standard HTML form for robust validation -->
+    <h2><span class="icon">&#128203;</span>Site Entry Registration</h2>
+    
     <form id="visitor-form" novalidate>
+      
+      <!-- Visitor Type Toggle -->
+      <div class="visitor-type-toggle">
+        <label class="radio-card">
+          <input type="radio" name="visitor_type" id="type-visitor" value="visitor" checked>
+          <span class="rc-content">
+            <strong>Non-Andritz Visitor</strong>
+            <span>Full safety registration</span>
+          </span>
+        </label>
+        <label class="radio-card">
+          <input type="radio" name="visitor_type" id="type-andritz" value="andritz">
+          <span class="rc-content">
+            <strong>Andritz Employee</strong>
+            <span>Quick entry (Name, Email, Mobile)</span>
+          </span>
+        </label>
+      </div>
+
+      <p style="font-size:14px; margin-bottom:24px; color:var(--gray);">All fields marked <span style="color:var(--danger);font-weight:bold;">*</span> are required.</p>
+
+      <!-- COMMON FIELDS (Always visible) -->
       <div class="form-row">
         <div class="form-group">
           <label for="f-name">Full Name <span class="req">*</span></label>
           <input type="text" id="f-name" placeholder="e.g. Ramesh Kumar" required/>
         </div>
         <div class="form-group">
-          <label for="f-org">Organisation / Company <span class="req">*</span></label>
-          <input type="text" id="f-org" placeholder="e.g. NEEPCO" required/>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
           <label for="f-mobile">Mobile Number <span class="req">*</span></label>
           <input type="tel" id="f-mobile" placeholder="+91 XXXXX XXXXX" required/>
         </div>
+      </div>
+
+      <!-- ANDRITZ EMPLOYEE FIELDS (Hidden by default) -->
+      <div id="andritz-fields" style="display: none;">
         <div class="form-group">
-          <label for="f-purpose">Purpose of Visit <span class="req">*</span></label>
-          <select id="f-purpose" required>
-            <option value="">— Select —</option>
-            <option>Official Inspection</option>
-            <option>Client Visit (NEEPCO)</option>
-            <option>Vendor / Supplier</option>
-            <option>Contractor Meeting</option>
-            <option>Government / Regulatory</option>
-            <option>Other</option>
-          </select>
+          <label for="f-email">Company Email ID <span class="req">*</span></label>
+          <input type="email" id="f-email" placeholder="name@andritz.com"/>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="f-area">Area to be Visited <span class="req">*</span></label>
-          <select id="f-area" required>
-            <option value="">— Select —</option>
-            <option value="SwitchYard">SwitchYard</option>
-            <option value="Control Room">Control Room</option>
-            <option value="Turbine Floor">Turbine Floor</option>
-            <option value="MIV Floor">MIV Floor</option>
-            <option value="Generator Floor">Generator Floor</option>
-            <option value="Dam">Dam</option>
-            <option value="Office / Colony">Office / Colony</option>
-          </select>
+      <!-- NON-ANDRITZ VISITOR FIELDS -->
+      <div id="visitor-fields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-org">Organisation / Company <span class="req">*</span></label>
+            <input type="text" id="f-org" placeholder="e.g. NEEPCO" required/>
+          </div>
+          <div class="form-group">
+            <label for="f-purpose">Purpose of Visit <span class="req">*</span></label>
+            <select id="f-purpose" required>
+              <option value="">— Select —</option>
+              <option>Official Inspection</option>
+              <option>Client Visit (NEEPCO)</option>
+              <option>Vendor / Supplier</option>
+              <option>Contractor Meeting</option>
+              <option>Government / Regulatory</option>
+              <option>Other</option>
+            </select>
+          </div>
         </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-area">Area to be Visited <span class="req">*</span></label>
+            <select id="f-area" required>
+              <option value="">— Select —</option>
+              <option value="SwitchYard">SwitchYard</option>
+              <option value="Control Room">Control Room</option>
+              <option value="Turbine Floor">Turbine Floor</option>
+              <option value="MIV Floor">MIV Floor</option>
+              <option value="Generator Floor">Generator Floor</option>
+              <option value="Dam">Dam</option>
+              <option value="Office / Colony">Office / Colony</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-host">Hosted By (Site Contact Name) <span class="req">*</span></label>
+            <input type="text" id="f-host" placeholder="Name of person receiving you" required/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-date">Date of Visit <span class="req">*</span></label>
+            <input type="date" id="f-date" required/>
+          </div>
+          <div class="form-group">
+            <label for="f-timein">Expected Time In <span class="req">*</span></label>
+            <input type="time" id="f-timein" required/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="f-idtype">ID Proof Type <span class="req">*</span></label>
+            <select id="f-idtype" required>
+              <option value="">— Select —</option>
+              <option value="Aadhaar Card">Aadhaar Card</option>
+              <option value="Passport">Passport</option>
+              <option value="Driving Licence">Driving Licence</option>
+              <option value="Company ID">Company ID</option>
+              <option value="Government ID">Government ID</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="f-idnum">ID Proof Number <span class="req">*</span></label>
+            <input type="text" id="f-idnum" placeholder="Enter ID number" required/>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label for="f-host">Hosted By (Site Contact Name) <span class="req">*</span></label>
-          <input type="text" id="f-host" placeholder="Name of person receiving you" required/>
+          <label for="f-bp">Blood Group <span class="req">*</span></label>
+          <input type="text" id="f-bp" placeholder="e.g. B+" required/>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="f-date">Date of Visit <span class="req">*</span></label>
-          <input type="date" id="f-date" required/>
-        </div>
-        <div class="form-group">
-          <label for="f-timein">Expected Time In <span class="req">*</span></label>
-          <input type="time" id="f-timein" required/>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label for="f-idtype">ID Proof Type <span class="req">*</span></label>
-          <select id="f-idtype" required>
-            <option value="">— Select —</option>
-            <option value="Aadhaar Card">Aadhaar Card</option>
-            <option value="Passport">Passport</option>
-            <option value="Driving Licence">Driving Licence</option>
-            <option value="Company ID">Company ID</option>
-            <option value="Government ID">Government ID</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="f-idnum">ID Proof Number <span class="req">*</span></label>
-          <input type="text" id="f-idnum" placeholder="Enter ID number" required/>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="f-bp">Blood Group <span class="req">*</span></label>
-        <input type="text" id="f-bp" placeholder="e.g. B+" required/>
-      </div>
-
+      <!-- CONSENT BOX (Applies to both) -->
       <div class="consent-box">
         <p>By checking below, I confirm that I have completed the Safety Induction for PARE HEP 2&#xD7;55 MW site and agree to:</p>
         <ul style="margin: 10px 0 0 16px; font-size:14px; line-height:1.6; color:#34495E;">
@@ -532,7 +574,7 @@
         </ul>
         <div class="consent-check">
           <input type="checkbox" id="consent-cb" required/>
-          <label for="consent-cb">I have read, understood, and agree to comply with all safety rules and visitor instructions.</label>
+          <label for="consent-cb">I have read, understood, and agree to comply with all site safety rules.</label>
         </div>
       </div>
 
@@ -592,7 +634,6 @@
   function showStep(index) {
     sections.forEach((s) => s.classList.remove('active'));
     sections[index].classList.add('active');
-    // Calculate progress (last step is success screen, so divide by length - 2 for visual accuracy)
     let progress = (index / (sections.length - 1)) * 100;
     progressFill.style.width = `${progress}%`;
     stepLabel.textContent = `Step ${index + 1} / ${sections.length}`;
@@ -672,7 +713,23 @@
     $('#btn-quiz-next').disabled = !allCorrect;
   }
 
-  // 5. Form Submission via Hidden Iframe
+  // 5. Form Type Toggling (Andritz vs Non-Andritz)
+  function toggleFormType() {
+    const isAndritz = $('#type-andritz').checked;
+    
+    // Toggle Layout Visibility
+    $('#visitor-fields').style.display = isAndritz ? 'none' : 'block';
+    $('#andritz-fields').style.display = isAndritz ? 'block' : 'none';
+    
+    // Toggle the 'required' attributes so form validation does not block submission on hidden fields
+    $$('#visitor-fields input, #visitor-fields select').forEach(el => {
+      el.required = !isAndritz;
+    });
+    
+    $('#f-email').required = isAndritz;
+  }
+
+  // 6. Form Submission via Hidden Iframe
   function postToGoogleForm(fields) {
     const form = document.createElement('form');
     form.method = 'POST';
@@ -706,27 +763,57 @@
     $('#pass-id').textContent = passId;
     submitOverlay.classList.add('show');
 
-    const [dateYear, dateMonth, dateDay] = $('#f-date').value.split('-');
-    const [timeHour, timeMinute] = $('#f-timein').value.split(':');
-
-    // Post to Google Form mapping
-    postToGoogleForm({
-      'entry.2017134743': $('#f-name').value,
-      'entry.338794571': $('#f-org').value,
+    const isAndritz = $('#type-andritz').checked;
+    
+    // Common fields
+    let payload = {
       'entry.503286308': $('#f-mobile').value,
-      'entry.588372971': $('#f-purpose').value,
-      'entry.1984568855': $('#f-area').value,
-      'entry.1679077126_year': dateYear,
-      'entry.1679077126_month': String(parseInt(dateMonth, 10)),
-      'entry.1679077126_day': String(parseInt(dateDay, 10)),
-      'entry.1257435586_hour': timeHour,
-      'entry.1257435586_minute': timeMinute,
-      'entry.819725668': $('#f-host').value,
-      'entry.1177683264': $('#f-idtype').value,
-      'entry.1053711216': $('#f-idnum').value,
-      'entry.1960355008': $('#f-bp').value,
       'entry.659276636': passId,
-    });
+    };
+
+    if (isAndritz) {
+      // Append Email to the name field to ensure the data is captured (until you add an Email entry ID to your Google Form)
+      payload['entry.2017134743'] = `${$('#f-name').value} (${$('#f-email').value})`;
+      
+      // Auto-fill required visitor data with default safe values to bypass Google Form mandatory blocks
+      payload['entry.338794571'] = 'ANDRITZ (Employee)'; 
+      payload['entry.588372971'] = 'Internal Employee'; 
+      payload['entry.1984568855'] = 'All Areas'; 
+      payload['entry.819725668'] = 'Self / Internal'; 
+      payload['entry.1177683264'] = 'Company ID'; 
+      payload['entry.1053711216'] = 'N/A'; 
+      payload['entry.1960355008'] = 'N/A'; 
+      
+      // Automatically pull current Date & Time
+      const now = new Date();
+      payload['entry.1679077126_year'] = now.getFullYear().toString();
+      payload['entry.1679077126_month'] = (now.getMonth() + 1).toString();
+      payload['entry.1679077126_day'] = now.getDate().toString();
+      payload['entry.1257435586_hour'] = now.getHours().toString().padStart(2, '0');
+      payload['entry.1257435586_minute'] = now.getMinutes().toString().padStart(2, '0');
+
+    } else {
+      // Standard Visitor Form Logic
+      const [dateYear, dateMonth, dateDay] = $('#f-date').value.split('-');
+      const [timeHour, timeMinute] = $('#f-timein').value.split(':');
+
+      payload['entry.2017134743'] = $('#f-name').value;
+      payload['entry.338794571'] = $('#f-org').value;
+      payload['entry.588372971'] = $('#f-purpose').value;
+      payload['entry.1984568855'] = $('#f-area').value;
+      payload['entry.1679077126_year'] = dateYear;
+      payload['entry.1679077126_month'] = String(parseInt(dateMonth, 10));
+      payload['entry.1679077126_day'] = String(parseInt(dateDay, 10));
+      payload['entry.1257435586_hour'] = timeHour;
+      payload['entry.1257435586_minute'] = timeMinute;
+      payload['entry.819725668'] = $('#f-host').value;
+      payload['entry.1177683264'] = $('#f-idtype').value;
+      payload['entry.1053711216'] = $('#f-idnum').value;
+      payload['entry.1960355008'] = $('#f-bp').value;
+    }
+
+    // Submit POST payload to Google Forms
+    postToGoogleForm(payload);
 
     setTimeout(() => {
       submitOverlay.classList.remove('show');
@@ -734,12 +821,16 @@
     }, 2000);
   }
 
-  // 6. Event Listeners
+  // 7. Event Listeners
   document.addEventListener('DOMContentLoaded', () => {
     showStep(currentIndex);
 
-    // Pre-fill today's date
+    // Pre-fill today's date for standard visitors
     $('#f-date').value = new Date().toISOString().split('T')[0];
+
+    // Form Type Listeners
+    $('#type-visitor').addEventListener('change', toggleFormType);
+    $('#type-andritz').addEventListener('change', toggleFormType);
 
     // Navigation buttons
     $$('[data-goto]').forEach((btn) => {
